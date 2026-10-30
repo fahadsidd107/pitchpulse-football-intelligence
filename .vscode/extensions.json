@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "rust-lang.rust-analyzer",
+    "Vue.volar",
+    "bradlc.vscode-tailwindcss",
+    "EditorConfig.EditorConfig"
+  ]
+}

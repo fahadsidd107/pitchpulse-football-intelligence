@@ -1,0 +1,23 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+# Build output and dependency caches
+/target/
+node_modules/
+dist/
+coverage/
+.pnpm-store/
+*.log
+# Local infrastructure volumes
+.local/
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Read-only diagnostics. Run with Bash 3.2+ (macOS, Linux, or WSL2).
+set -u
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd) || exit 1
+cd "$root" || exit 1
+failures=0
+strict_git=false
+case "${1:-}" in
+  '') ;;
+  --strict-git) strict_git=true ;;
+  *) printf 'Usage: bash scripts/check-prerequisites [--strict-git]\n'; exit 2 ;;
+esac
+pass() { printf 'PASS  %s\n' "$*"; }
+fail() { printf 'FAIL  %s\n' "$*"; failures=$((failures + 1)); }
+check() {
+  local label=$1 output
+  shift
+  if output=$("$@" 2>&1); then
+    pass "$label: ${output%%$'\n'*}"
+  else
+    fail "$label unavailable or failed; see docs/runbooks/SETUP.md"
+  fi
+}
+check rustup rustup --version
+check rustc rustc --version
+check cargo cargo --version
+check rustfmt rustfmt --version
+check clippy cargo clippy --version
+check rust-analyzer rust-analyzer --version
+check Node.js node --version
+check pnpm pnpm --version
+check Git git --version
+check 'GitHub CLI' gh --version
+check Docker docker --version
+check Compose docker compose version
+check 'Docker engine' docker info --format '{{.ServerVersion}}'
+check 'PostgreSQL client' psql --version
+
+expected_rust=$(sed -n 's/^channel = "\([^"]*\)"/\1/p' rust-toolchain.toml)
+actual_rust=$(rustc --version 2>/dev/null | awk '{print $2}')
+if [ "$actual_rust" = "$expected_rust" ]; then pass 'Rust pin matches'; else fail "Rust requires $expected_rust"; fi
+expected_node=$(cat .nvmrc)
+actual_node=$(node --version 2>/dev/null)
+if [ "$actual_node" = "v$expected_node" ]; then pass 'Node pin matches'; else fail "Select Node $expected_node (see setup guide)"; fi
+expected_pnpm=$(sed -n 's/.*"packageManager": "pnpm@\([^"]*\)".*/\1/p' package.json)
+actual_pnpm=$(pnpm --version 2>/dev/null)
+if [ "$actual_pnpm" = "$expected_pnpm" ]; then pass 'pnpm pin matches'; else fail "Install pnpm@$expected_pnpm"; fi
+if git show-ref --verify --quiet refs/heads/main; then pass 'main branch exists'; else fail 'main branch missing'; fi
+if [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$root" ]; then pass 'Repository root matches'; else fail 'Not the project Git root'; fi
+if [ -z "$(git status --porcelain 2>/dev/null)" ]; then
+  pass 'Git working tree clean'
+elif "$strict_git"; then
+  fail 'Git working tree contains changes; review and commit your work'
+else
+  printf 'WARN  Git working tree contains changes (use --strict-git for release acceptance)\n'
+fi
+tracked_secrets=$(git ls-files -- '.env' '*/.env' '.env.*' '*/.env.*' '*.pem' '*.key' | sed '/\.env\.example$/d')
+if [ -z "$tracked_secrets" ]; then pass 'No tracked credential filenames'; else fail 'Potential credential files tracked (inspect locally)'; fi
+printf '\n%d required check(s) failed. Editor extensions: verify workspace recommendations manually.\n' "$failures"
+[ "$failures" -eq 0 ]
