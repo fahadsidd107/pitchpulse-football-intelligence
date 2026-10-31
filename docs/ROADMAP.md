@@ -345,7 +345,7 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 | Step | Name | Planned cumulative coverage | Status |
 |---|---|---:|---|
 | 01 | Environment & prerequisites | 3% | Complete |
-| 02 | Rust/Vue workspace and Docker infrastructure | 7% | In progress |
+| 02 | Rust/Vue workspace and Docker infrastructure | 7% | Complete |
 | 03 | Stadium Noir design system and Three.js shell | 11% | Not started |
 | 04 | PostgreSQL schema, migrations and domain model | 15% | Not started |
 | 05 | Axum API, auth, profile and OpenAPI | 20% | Not started |
@@ -369,10 +369,10 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 | 23 | Security, E2E testing, load tests and observability | 98% | Not started |
 | 24 | Production deployment and portfolio documentation | 100% | Not started |
 
-**Current step:** 02 — Monorepo and local infrastructure  
-**Last verified completed step:** 01 — Environment and prerequisites  
+**Current step:** 03 — Stadium Noir design system and Three.js shell
+**Last verified completed step:** 02 — Monorepo and local infrastructure
 **Last updated:** 2026-10-31
-**Outstanding blockers:** None for Step 01; Step 02 implementation in progress. Live ball-coordinate provider access is **not required** for development.
+**Outstanding blockers:** None for Steps 01–02. Live ball-coordinate provider access is **not required** for development.
 
 ---
 
@@ -393,7 +393,7 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 **Verification:** Fresh-machine checklist runs, Git repository clean, no secrets committed.  
 **What works:** Developers can reliably begin local development.
 
-### [ ] Step 02 — Monorepo and local infrastructure (7%)
+### [x] Step 02 — Monorepo and local infrastructure (7%)
 
 1. Initialize Cargo workspace with Axum API, ingestion/event/job worker executables and shared crates; pin compatible dependencies.
 2. Scaffold Vue 3 + TypeScript + Vite; add Vue Router, Tailwind, Pinia, lint/typecheck/test tooling.
@@ -781,3 +781,18 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 - Fixed macOS symlink path handling in the checker; fresh clone recheck passed with zero failures.
 - Validation was on macOS; Linux/WSL installation instructions are documented but not executed on separate operating systems.
 - Next: Step 02, now explicitly authorized.
+
+### Session update — 2026-10-31 — Step 02 complete
+
+- Target step: 02 — Monorepo and local infrastructure.
+- Verified starting state: Step 01 passed strict acceptance in a clean checkout and fresh local clone. Read the expanded architecture contract and supplied reference; preserved the target design and added an implemented-status section.
+- Implemented substeps: all seven Step 02 items. Cargo workspace has API and ingestion/event/job-worker targets plus domain/application/infrastructure/shared libraries. Vue includes TypeScript, Vite, Router, Tailwind and Pinia. Compose starts PostgreSQL, Redis, Kafka and RabbitMQ with health checks and named volumes. API provides validated config, structured request logging/IDs, errors, timeout handling, restricted CORS, graceful shutdown, liveness and SQLx-backed readiness.
+- Key files changed: `Cargo.toml`, `Cargo.lock`, `apps/`, `crates/`, `docker-compose.yml`, `.env.example`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `.npmrc`, `.github/workflows/ci.yml`, `scripts/check`, dev scripts, README and architecture/API/ADR/runbook docs.
+- Migrations/contracts/events added: system/liveness/readiness HTTP contracts and OpenAPI schema; no migrations or football events required for this slice. Readiness executes `SELECT 1` against PostgreSQL.
+- Commands/tests actually executed and outcomes: locked offline pnpm installation and `bash scripts/check` passed (Rust fmt, Clippy, 8 Rust tests, ESLint, TypeScript, 5 Vitest tests and production build). `pnpm --dir apps/web test:e2e` passed all 8 desktop/mobile browser tests. `docker compose up -d --wait --wait-timeout 180` passed; native Redis/RabbitMQ/Kafka checks passed. All worker `--check-config` runs and API/worker SIGTERM shutdown checks passed. `git diff --check` passed.
+- Manual demonstration performed: real API returned liveness 200, database readiness 200 and explicit MOCK system metadata. PostgreSQL interruption produced readiness 503 while liveness remained 200, and recovery restored readiness. Desktop/mobile screenshots visually inspected; browser showed “Connected and ready”, offline/retry, loading and keyboard skip-link behavior.
+- Data mode shown: MOCK; no football facts or fixtures exist yet. Worker processing is explicitly disabled until its later milestones.
+- Remaining failures/blockers: none for local Step 02 acceptance. GitHub Actions workflow is committed but a hosted CI run has not been triggered; equivalent checks passed locally. Linux/WSL execution remains unverified; local verification used macOS.
+- Architecture/API/docs updated: retained the user's architecture contract; added current implementation status, ADR-0001 reconciling executable layout, local development diagram, HTTP/OpenAPI contracts and startup/recovery runbook.
+- Step status: COMPLETE (7% planned cumulative scope coverage).
+- Next exact step and first action: Step 03 — implement Stadium Noir design tokens/primitives and responsive navigation before adding the Three.js shell. Await explicit instruction before starting Step 03.

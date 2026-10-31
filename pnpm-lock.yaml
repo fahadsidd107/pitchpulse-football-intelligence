@@ -11,59 +11,59 @@ importers:
   apps/web:
     dependencies:
       pinia:
-        specifier: ^3.0.4
+        specifier: 3.0.4
         version: 3.0.4(typescript@5.9.3)(vue@3.5.44(typescript@5.9.3))
       vue:
-        specifier: ^3.5.44
+        specifier: 3.5.44
         version: 3.5.44(typescript@5.9.3)
       vue-router:
-        specifier: ^4.6.4
+        specifier: 4.6.4
         version: 4.6.4(vue@3.5.44(typescript@5.9.3))
     devDependencies:
       '@eslint/js':
-        specifier: ^9.39.5
+        specifier: 9.39.5
         version: 9.39.5
       '@playwright/test':
-        specifier: ^1.64.1
+        specifier: 1.64.1
         version: 1.64.1
       '@tailwindcss/vite':
-        specifier: ^4.3.3
+        specifier: 4.3.3
         version: 4.3.3(vite@7.3.7(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.32.0))
       '@types/node':
-        specifier: ^24.19.2
+        specifier: 24.19.2
         version: 24.19.2
       '@vitejs/plugin-vue':
-        specifier: ^6.0.10
+        specifier: 6.0.10
         version: 6.0.10(vite@7.3.7(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.32.0))(vue@3.5.44(typescript@5.9.3))
       '@vue/test-utils':
-        specifier: ^2.5.1
+        specifier: 2.5.1
         version: 2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@5.9.3))
       eslint:
-        specifier: ^9.39.5
+        specifier: 9.39.5
         version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
       eslint-plugin-vue:
-        specifier: ^10.12.0
+        specifier: 10.12.0
         version: 10.12.0(@typescript-eslint/parser@8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(vue-eslint-parser@10.4.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))
       jsdom:
-        specifier: ^26.1.0
+        specifier: 26.1.0
         version: 26.1.0(supports-color@7.2.0)
       tailwindcss:
-        specifier: ^4.3.3
+        specifier: 4.3.3
         version: 4.3.3
       typescript:
-        specifier: ^5.9.3
+        specifier: 5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.72.1
+        specifier: 8.72.1
         version: 8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
       vite:
-        specifier: ^7.3.7
+        specifier: 7.3.7
         version: 7.3.7(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.32.0)
       vitest:
-        specifier: ^3.2.7
+        specifier: 3.2.7
         version: 3.2.7(@types/node@24.19.2)(jiti@2.7.0)(jsdom@26.1.0(supports-color@7.2.0))(lightningcss@1.32.0)(supports-color@7.2.0)
       vue-tsc:
-        specifier: ^3.3.14
+        specifier: 3.3.14
         version: 3.3.14(typescript@5.9.3)
 
 packages:
