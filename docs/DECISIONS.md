@@ -14,4 +14,8 @@ Retain default copyright protection: no open-source grant, package marked `UNLIC
 
 ## 2026-10-31 — Scope and configuration
 
-Step 01 provides setup only. `.env.example` proposes local configuration names; Step 02 must implement and validate their consumption. No secrets or paid accounts are needed for the planned mock mode. Editor recommendations are portable configuration, not evidence that extensions are installed.
+Step 01 provided setup only. Step 02 implements and validates the API configuration from `.env.example`; credentials and public frontend settings remain separated. No secrets or paid accounts are needed for the planned mock mode. Editor recommendations are portable configuration, not evidence that extensions are installed.
+
+## 2026-10-31 — Workspace boundaries
+
+See [ADR-0001](adr/0001-step-02-workspace.md) for the implementation boundaries, health semantics, worker bootstrap scope, and local infrastructure choices. All direct Rust/frontend versions and transitive lockfiles are committed for reproducibility.

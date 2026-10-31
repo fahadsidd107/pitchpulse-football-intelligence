@@ -83,4 +83,4 @@ The checker is read-only and reports all failures instead of stopping at the fir
 - **Corporate proxy/network errors:** configure approved proxy/CA settings; do not disable TLS verification.
 - **Dirty Git tree:** inspect `git status --short`, review changes and commit only intended files. The checker never deletes or resets your work.
 
-There is no application demo yet. `docker compose up`, Cargo workspace checks and Vue builds belong to Step 02 and will fail until that implementation exists.
+Step 02 now provides the local application foundation. Continue with [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for Compose startup, API/Vue commands and validation.

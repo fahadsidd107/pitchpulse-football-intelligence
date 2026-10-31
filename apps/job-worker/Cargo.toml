@@ -1,0 +1,9 @@
+[package]
+name = "pitchpulse-job-worker"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+pitchpulse-shared = { path = "../../crates/shared" }
+tokio.workspace = true

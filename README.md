@@ -6,18 +6,23 @@ Development starts with deterministic fictional demo data. Recorded tracking, re
 
 ## Current state
 
-This repository contains the environment scaffold and setup diagnostics for roadmap Step 01. No API, Vue application, database schema or Docker Compose stack exists yet. Those begin in Step 02. See [roadmap progress](docs/ROADMAP.md#6-milestone-checklist-and-progress) for verified completion status.
+Step 01 setup is verified. Step 02 provides a Rust workspace, a Vue status page, and local PostgreSQL/Redis/Kafka/RabbitMQ infrastructure. The status page checks the real API and PostgreSQL connection; no football feed exists yet. See [roadmap progress](docs/ROADMAP.md#6-milestone-checklist-and-progress) for validation status.
 
-## Get started
+## Run locally
 
-Follow the [macOS, Linux and Windows setup guide](docs/runbooks/SETUP.md), select the pinned tool versions, start Docker, then run:
+Follow the [toolchain setup guide](docs/runbooks/SETUP.md), select the pinned versions and start Docker. Then follow [local development](docs/runbooks/LOCAL_DEVELOPMENT.md) to configure your ignored `.env` with local credentials.
 
 ```bash
-bash scripts/check-prerequisites
-cp .env.example .env
+pnpm install --frozen-lockfile
+docker compose up -d --wait --wait-timeout 180
+bash scripts/dev-api
+# In a second terminal:
+bash scripts/dev-web
 ```
 
-The checker reports every missing tool and exits nonzero on required failures. Use `--strict-git` to also require a clean working tree. Replace local credential placeholders before services are introduced; provider/AI credentials are optional for demo development.
+Open `http://localhost:5173` for the status page. The API listens on port 3000; PostgreSQL uses host port 5433. `bash scripts/check` runs Rust formatting/Clippy/tests and web lint/typecheck/tests/build. With API and database running, `pnpm --dir apps/web test:e2e` runs browser checks (install Chromium as described in the runbook first).
+
+The worker targets currently validate configuration and handle shutdown; their processing pipelines are introduced in later steps. All infrastructure ports are local-only. Stop with Ctrl-C and `docker compose down` (preserves data volumes).
 
 ## Planned stack
 

@@ -1,0 +1,13 @@
+flowchart LR
+  Browser[Vue 3 + Router + Pinia] -->|GET system + readiness| API[Axum API :3000]
+  API --> Application[Application metadata]
+  Application --> Domain[Framework-free domain: MOCK]
+  API --> SQLx[Infrastructure: SQLx pool]
+  SQLx --> PostgreSQL[(PostgreSQL :5433)]
+  subgraph LocalCompose[Local Compose: named volumes]
+    PostgreSQL
+    Redis[(Redis :6379)]
+    Kafka[(Kafka :9092)]
+    RabbitMQ[(RabbitMQ :5672)]
+  end
+  Workers[Ingest / event-consumer / job-worker bootstrap] -. processing not enabled .-> LocalCompose

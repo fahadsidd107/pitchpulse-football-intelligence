@@ -344,8 +344,8 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 
 | Step | Name | Planned cumulative coverage | Status |
 |---|---|---:|---|
-| 01 | Environment & prerequisites | 3% | In progress — tools and editor extensions verified; clean-tree acceptance pending |
-| 02 | Rust/Vue workspace and Docker infrastructure | 7% | Not started |
+| 01 | Environment & prerequisites | 3% | Complete |
+| 02 | Rust/Vue workspace and Docker infrastructure | 7% | In progress |
 | 03 | Stadium Noir design system and Three.js shell | 11% | Not started |
 | 04 | PostgreSQL schema, migrations and domain model | 15% | Not started |
 | 05 | Axum API, auth, profile and OpenAPI | 20% | Not started |
@@ -369,16 +369,16 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 | 23 | Security, E2E testing, load tests and observability | 98% | Not started |
 | 24 | Production deployment and portfolio documentation | 100% | Not started |
 
-**Current step:** 01 — Environment & prerequisites  
-**Last verified completed step:** None  
+**Current step:** 02 — Monorepo and local infrastructure  
+**Last verified completed step:** 01 — Environment and prerequisites  
 **Last updated:** 2026-10-31
-**Outstanding blockers:** Step 01 clean-tree acceptance remains; see `docs/BLOCKERS.md`. Live ball-coordinate provider access is **not required** for development.
+**Outstanding blockers:** None for Step 01; Step 02 implementation in progress. Live ball-coordinate provider access is **not required** for development.
 
 ---
 
 ## 7. Detailed implementation steps
 
-### [ ] Step 01 — Environment and prerequisites (3%)
+### [x] Step 01 — Environment and prerequisites (3%)
 
 **Goal:** A reproducible local developer setup from an empty folder.
 
@@ -774,3 +774,10 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 - Verified installed extension manifests: rust-lang.rust-analyzer 0.3.3097, Vue.volar 3.3.14 and bradlc.vscode-tailwindcss 0.16.0. Editor extension prerequisite is now satisfied.
 - The optional `code` shell shortcut remains broken; direct extension verification succeeded.
 - Remaining acceptance item: review/commit documentation edits and rerun `bash scripts/check-prerequisites --strict-git`. Step 01 remains unchecked until the required clean-tree check passes.
+
+### Step 01 completion verification
+
+- COMPLETE: strict prerequisite check passed in the clean main checkout and a fresh temporary clone, including ignored `.env`, installed Rust/Vue/Tailwind extensions, all pinned tools and Docker readiness.
+- Fixed macOS symlink path handling in the checker; fresh clone recheck passed with zero failures.
+- Validation was on macOS; Linux/WSL installation instructions are documented but not executed on separate operating systems.
+- Next: Step 02, now explicitly authorized.
