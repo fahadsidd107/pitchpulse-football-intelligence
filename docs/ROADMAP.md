@@ -344,7 +344,7 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 
 | Step | Name | Planned cumulative coverage | Status |
 |---|---|---:|---|
-| 01 | Environment & prerequisites | 3% | Not started |
+| 01 | Environment & prerequisites | 3% | In progress — tools and editor extensions verified; clean-tree acceptance pending |
 | 02 | Rust/Vue workspace and Docker infrastructure | 7% | Not started |
 | 03 | Stadium Noir design system and Three.js shell | 11% | Not started |
 | 04 | PostgreSQL schema, migrations and domain model | 15% | Not started |
@@ -371,8 +371,8 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 
 **Current step:** 01 — Environment & prerequisites  
 **Last verified completed step:** None  
-**Last updated:** 2026-10-29  
-**Outstanding blockers:** None recorded; live ball-coordinate provider access is **not required** for development.
+**Last updated:** 2026-10-31
+**Outstanding blockers:** Step 01 clean-tree acceptance remains; see `docs/BLOCKERS.md`. Live ball-coordinate provider access is **not required** for development.
 
 ---
 
@@ -753,3 +753,24 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 ---
 
 **Product promise:** A complete football intelligence system that can be demonstrated with deterministic mocked match feeds today, while preserving the interfaces required to add licensed live tracking and football APIs later.
+
+
+### Session update — 2026-10-31
+- Target step: 01 — Environment and prerequisites.
+- Verified starting state: only README and this roadmap; branch `main` already established; pre-existing modified tracked `.DS_Store`; no application manifests or migrations.
+- Implemented substeps: Rust installed via rustup with all required components; verified Node LTS, pinned pnpm, Git, gh, Docker Engine/Compose and psql; added repository conventions, license decision, environment template, README, editor recommendations, platform setup guide and prerequisite checker.
+- Key files changed: `.gitignore`, `.gitattributes`, `.editorconfig`, `.env.example`, `.nvmrc`, `rust-toolchain.toml`, `package.json`, `.vscode/`, `scripts/check-prerequisites`, README, architecture/decisions/blockers/setup docs and this roadmap.
+- Migrations/contracts/events added: none; application implementation begins in Step 02.
+- Commands/tests actually executed and outcomes: prerequisite checker passed with zero required environment failures and a dirty-tree warning; `bash -n scripts/check-prerequisites` and `git diff --check` passed; Rust smoke compilation/execution passed; Node manifest check passed; ignore checks passed. Seven isolated checker scenarios passed: healthy tools, dirty-tree warning, strict dirty-tree failure, wrong Node, unavailable Docker, missing psql, invalid argument.
+- Manual demonstration performed: checker printed installed versions and confirmed a reachable Docker 28.3.2 engine; temporary Rust executable printed its success message. No product UI exists yet.
+- Data mode shown (mock/historical/live/reconstructed/simulated): none; `.env.example` defaults future development to mock.
+- Remaining failures/blockers: editor installation/verification pending user's editor choice; working tree contains remaining documentation edits; configuration files and the initial OS metadata change were committed externally during this session (`b6e9230`). No separate fresh-machine install performed.
+- Architecture/API/docs updated: current architecture and setup/decision/blocker records added; API documentation not applicable yet.
+- Step status: IN PROGRESS — checkbox intentionally remains unchecked under the no-false-completion rule.
+- Next exact step and first action: finish Step 01 editor setup, review/commit intended changes and rerun `bash scripts/check-prerequisites --strict-git`. Then Step 02 starts with Cargo workspace and Vue/Docker infrastructure scaffolding.
+
+### Step 01 verification follow-up
+
+- Verified installed extension manifests: rust-lang.rust-analyzer 0.3.3097, Vue.volar 3.3.14 and bradlc.vscode-tailwindcss 0.16.0. Editor extension prerequisite is now satisfied.
+- The optional `code` shell shortcut remains broken; direct extension verification succeeded.
+- Remaining acceptance item: review/commit documentation edits and rerun `bash scripts/check-prerequisites --strict-git`. Step 01 remains unchecked until the required clean-tree check passes.
