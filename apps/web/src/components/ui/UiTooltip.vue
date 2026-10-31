@@ -1,0 +1,2 @@
+<script setup lang="ts">import { ref, useId } from 'vue'; defineProps<{ label: string; text: string }>(); const open = ref(false); const id = useId()</script>
+<template><span class="tooltip-wrap" @mouseenter="open = true" @mouseleave="open = false"><button class="tooltip-trigger" :aria-label="label" :aria-describedby="open ? id : undefined" @focus="open = true" @blur="open = false" @click="open = !open" @keydown.esc="open = false">?</button><span v-if="open" :id="id" role="tooltip" class="tooltip">{{ text }}</span></span></template>

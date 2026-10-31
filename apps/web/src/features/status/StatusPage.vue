@@ -5,7 +5,7 @@ const status = useSystemStore()
 onMounted(() => { void status.refresh() })
 </script>
 <template>
-  <main id="main" class="mx-auto max-w-5xl px-6 py-12">
+  <main id="main" tabindex="-1" class="mx-auto max-w-5xl px-6 py-12">
     <p class="eyebrow">01 / FOUNDATION</p>
     <h1 class="mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl">A clear view.<br><span class="text-lime-200">From the ground up.</span></h1>
     <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">The foundation for football intelligence. Verify the connection between this app, the API and its database.</p>

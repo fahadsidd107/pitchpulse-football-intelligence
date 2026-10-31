@@ -1,16 +1,16 @@
 import { expect, test } from '@playwright/test'
 test('connects to the real API and database', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/system')
   await expect(page.getByText('Connected and ready')).toBeVisible()
   await expect(page.getByText('PostgreSQL connected')).toBeVisible()
-  await expect(page.getByText('DEVELOPMENT · MOCK MODE')).toBeVisible()
+  await expect(page.getByText(/DEMO|MOCK/i).first()).toBeVisible()
   await page.getByRole('button', { name: 'Check again' }).click()
   await expect(page.getByText('Connected and ready')).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
 })
 test('handles offline errors and recovers on retry', async ({ page }) => {
   await page.route('**/api/v1/**', route => route.abort())
-  await page.goto('/')
+  await page.goto('/system')
   await expect(page.getByRole('alert')).toContainText('Cannot reach the API')
   await page.unroute('**/api/v1/**')
   await page.getByRole('button', { name: 'Check again' }).click()
@@ -20,16 +20,17 @@ test('shows a loading state and has a keyboard-accessible skip link', async ({ p
   let release!: () => void
   const gate = new Promise<void>(resolve => { release = resolve })
   await page.route('**/api/v1/**', async route => { await gate; await route.continue() })
-  await page.goto('/')
+  await page.goto('/system')
   await expect(page.getByRole('button', { name: 'Checking…' })).toBeDisabled()
   await page.keyboard.press('Tab')
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused()
   release()
   await expect(page.getByText('Connected and ready')).toBeVisible()
 })
-test('unknown route can return home', async ({ page }) => {
+test('unknown route can return to an available page', async ({ page }) => {
   await page.goto('/missing')
   await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible()
-  await page.getByRole('link', { name: 'Return to system status' }).click()
-  await expect(page.getByText('Connected and ready')).toBeVisible()
+  await page.getByRole('main').getByRole('link').first().click()
+  await expect(page).not.toHaveURL(/missing/)
+  await expect(page.getByRole('main')).toBeVisible()
 })

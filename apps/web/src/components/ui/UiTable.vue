@@ -1,0 +1,2 @@
+<script setup lang="ts">defineProps<{ caption: string; columns: string[]; rows: (string | number)[][] }>()</script>
+<template><div class="table-scroll"><table><caption>{{ caption }}</caption><thead><tr><th v-for="column in columns" :key="column" scope="col">{{ column }}</th></tr></thead><tbody><tr v-for="(row, index) in rows" :key="index"><td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td></tr><tr v-if="!rows.length"><td :colspan="columns.length" class="table-empty">No data available. This demo is not connected.</td></tr></tbody></table></div></template>

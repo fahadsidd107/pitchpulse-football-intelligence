@@ -1,0 +1,2 @@
+<script setup lang="ts">defineProps<{ home: string; away: string; homeScore?: number | null; awayScore?: number | null }>()</script>
+<template><div class="match-score"><span>{{ home }}</span><strong :aria-label="homeScore == null || awayScore == null ? 'Score unavailable' : `${homeScore} to ${awayScore}`">{{ homeScore ?? '—' }} <small>:</small> {{ awayScore ?? '—' }}</strong><span>{{ away }}</span></div></template>

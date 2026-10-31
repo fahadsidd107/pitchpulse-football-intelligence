@@ -1,1 +1,1 @@
-<template><main id="main" class="mx-auto max-w-5xl px-6 py-20"><h1 class="text-4xl">Page not found</h1><p class="mt-4">This page is not available.</p><RouterLink class="check-button mt-8 inline-block" to="/">Return to system status</RouterLink></main></template>
+<template><main id="main" tabindex="-1" class="mx-auto max-w-5xl px-6 py-20"><h1 class="text-4xl">Page not found</h1><p class="mt-4">This page is not available.</p><RouterLink class="check-button mt-8 inline-block" to="/">Return home</RouterLink></main></template>
