@@ -7,5 +7,6 @@ export default ts.config(
   ...ts.configs.recommended,
   ...vue.configs['flat/recommended'],
   { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: ts.parser } } },
+  { files: ['**/*.ts', '**/*.vue'], rules: { 'no-undef': 'off' } },
   { rules: { 'vue/multi-word-component-names': 'off', 'vue/max-attributes-per-line': 'off', 'vue/singleline-html-element-content-newline': 'off', 'vue/html-self-closing': 'off' } },
 )

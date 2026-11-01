@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { searchSections, sections } from './app/sections'
 import UiModal from './components/ui/UiModal.vue'
 import UiNav from './components/ui/UiNav.vue'
 const route = useRoute(); const menuOpen = ref(false); const dialog = ref(''); const query = ref('')
 const results = computed(() => searchSections(query.value))
+function searchShortcut(event: KeyboardEvent) { const target = event.target as HTMLElement; if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) && !target.isContentEditable && !dialog.value) { event.preventDefault(); dialog.value = 'Search' } }
+onMounted(() => window.addEventListener('keydown', searchShortcut))
+onBeforeUnmount(() => window.removeEventListener('keydown', searchShortcut))
 const mobileItems = [sections[0]!, sections[1]!, sections[6]!, sections[9]!]
 watch(() => route.path, async () => { menuOpen.value = false; dialog.value = ''; document.title = `${sections.find(item => item.path === route.path)?.label ?? 'PitchPulse'} · PitchPulse`; await nextTick(); document.querySelector<HTMLElement>('#main')?.focus() })
 </script>
