@@ -1,0 +1,7 @@
+# Matchday feed
+
+`GET /api/v1/matchday` returns `{ source, mode, fetched_at, stale, matches }`. Each fixture has a numeric source ID, UTC kickoff, provider status, optional club and competition names, and nullable integer scores. A scheduled game without a score is never displayed as 0–0. The provider chooses today's slate in UTC; the local fictional sample has its own fixed date.
+
+The dedicated server-only credential is `FOOTBALL_DATA_API_KEY`. Empty means MOCK; otherwise the Rust API sends `X-Auth-Token` only to the fixed HTTPS v4 matches endpoint, with redirects disabled and a three-second timeout. No browser-selected upstream URL is accepted. Fetch time is Unix seconds in DELAYED mode and null for the bundled demo. The UI attributes the feed and polls at most once per minute while visible. One mutex coalesces concurrent requests and caches successes and failures for 60 seconds **per API process**. During provider errors the last snapshot is explicitly stale; access errors discard it. Without a usable snapshot the API returns a sanitized 503 error. A configured but failing provider never falls back to imaginary scores.
+
+Free fixtures and tables cover [selected competitions](https://www.football-data.org/coverage). This integration implements **fixtures only**. [API reference](https://www.football-data.org/documentation/quickstart) · [free-plan limits](https://www.football-data.org/pricing).

@@ -42,3 +42,23 @@ The worker targets currently validate configuration and handle shutdown; their p
 ## License
 
 No open-source license is granted at this stage (`UNLICENSED`). The owner can choose a license before public distribution; dependency and data licenses remain separate obligations.
+
+## Matchday fixtures and the interactive stadium
+
+Open **/** for the stadium, **/matches** for matchday fixtures, **/system** for API readiness, and **/design-system** for reusable components. Choose **Build-up**, **Switch play**, or **Finish** to show an authored tactical sequence. These plays are hypothetical; they are independent of provider scores. Reduced-motion and no-WebGL browsers can choose the same plays on a static pitch.
+
+To enable real fixtures, register for a free [football-data.org API key](https://www.football-data.org/client/register) and add this line to the **repository-root, Git-ignored `.env`** next to `Cargo.toml`:
+
+```dotenv
+FOOTBALL_DATA_API_KEY=your-token-here
+```
+
+Restart the Rust API. No frontend rebuild or provider switch is needed. Never place this token in `apps/web/.env`, any `VITE_*` variable, or a tracked file. On a server set the same variable in the API process's secrets configuration. Without it, the API serves two labeled fictional fixtures. With it, the match centre shows today's UTC matches from football-data.org, including an honest empty state on quiet days. The [free tier](https://www.football-data.org/pricing) offers delayed results, not real-time tracking.
+
+## One-command startup
+
+Use the pinned Node version (`nvm use`), then run `npm run dev` from the repository root. The root `dev.mjs` creates `.env` only if absent, starts Docker Desktop on macOS if needed, starts PostgreSQL/Redis, installs missing web dependencies, builds Rust, applies migrations/demo seed, waits for API readiness and starts Vue. Ctrl-C stops the host processes and keeps database data. Existing local configuration is preserved.
+
+Kafka and RabbitMQ are optional messaging services until their processing milestones; default startup stops existing project broker containers to free resources. `npm run dev:full` starts them too. `npm run dev:stop` stops all project containers without deleting volumes. First startup downloads dependencies/builds Rust; subsequent launches reuse caches. Broker health failures no longer block the default app.
+
+If Node selection fails, run `nvm install 24 && nvm use 24`, then `npm run dev`. The project accepts Node 24 patch releases; an exact patch installation is not required.

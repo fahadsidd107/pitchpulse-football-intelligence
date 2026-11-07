@@ -1,0 +1,184 @@
+{
+  "competitions": [
+    {
+      "id": "competitions-0",
+      "name": "Founders Cup",
+      "detail": "8 clubs \u00b7 Fictional cup",
+      "value": "Round 4"
+    },
+    {
+      "id": "competitions-1",
+      "name": "Harbour League",
+      "detail": "Fictional development league",
+      "value": "2026/27"
+    }
+  ],
+  "clubs": [
+    {
+      "id": "clubs-0",
+      "name": "Northbank Athletic",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "12 pts"
+    },
+    {
+      "id": "clubs-1",
+      "name": "Cinder Vale",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "13 pts"
+    },
+    {
+      "id": "clubs-2",
+      "name": "Harbour Eleven",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "14 pts"
+    },
+    {
+      "id": "clubs-3",
+      "name": "Elmfield United",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "15 pts"
+    },
+    {
+      "id": "clubs-4",
+      "name": "Ashford Rovers",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "16 pts"
+    },
+    {
+      "id": "clubs-5",
+      "name": "Stonebridge FC",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "17 pts"
+    },
+    {
+      "id": "clubs-6",
+      "name": "Meadow Town",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "18 pts"
+    },
+    {
+      "id": "clubs-7",
+      "name": "Westmere City",
+      "detail": "Founders Cup \u00b7 Demo club",
+      "value": "19 pts"
+    }
+  ],
+  "players": [
+    {
+      "id": "players-0",
+      "name": "Alex Vale",
+      "detail": "Northbank \u00b7 Midfielder",
+      "value": "8 goals"
+    },
+    {
+      "id": "players-1",
+      "name": "Sam Moss",
+      "detail": "Cinder Vale \u00b7 Forward",
+      "value": "6 goals"
+    },
+    {
+      "id": "players-assists",
+      "name": "Rory Finch",
+      "detail": "Elmfield \u00b7 Demo assist leader \u00b7 9 assists",
+      "value": "9 assists"
+    }
+  ],
+  "rankings": [
+    {
+      "id": "rankings-0",
+      "name": "Alex Vale",
+      "detail": "Demo positional rating",
+      "value": "8.7"
+    },
+    {
+      "id": "rankings-1",
+      "name": "Sam Moss",
+      "detail": "Demo positional rating",
+      "value": "8.4"
+    }
+  ],
+  "ai-analyst": [
+    {
+      "id": "ai-analyst-0",
+      "name": "Demo match analysis",
+      "detail": "Northbank created three shooting opportunities after switching to the right flank. Authored example, not an AI result.",
+      "value": "Read example"
+    }
+  ],
+  "tactical-lab": [
+    {
+      "id": "tactical-lab-0",
+      "name": "4-3-3 wide build-up",
+      "detail": "Hypothetical overlapping full-backs create width",
+      "value": "4-3-3"
+    }
+  ],
+  "simulator": [
+    {
+      "id": "simulator-0",
+      "name": "Legends vs Challengers",
+      "detail": "Authored hypothetical result \u00b7 seed 42",
+      "value": "2 : 1"
+    }
+  ],
+  "fantasy": [
+    {
+      "id": "fantasy-0",
+      "name": "Harbour Dream XI",
+      "detail": "Fictional gameweek score \u00b7 no account required",
+      "value": "68 pts"
+    }
+  ],
+  "news": [
+    {
+      "id": "news-0",
+      "name": "Fictional: Northbank opens its training academy",
+      "detail": "Demo editorial \u00b7 invented club story",
+      "value": "Demo"
+    },
+    {
+      "id": "news-history",
+      "name": "Fictional: the inaugural Founders Cup final",
+      "detail": "On this day \u00b7 authored demo history, not a factual event",
+      "value": "Demo archive"
+    }
+  ],
+  "transfers": [
+    {
+      "id": "transfers-0",
+      "name": "Fictional: Sam Moss joins Harbour Eleven",
+      "detail": "Invented transfer example, not a real report",
+      "value": "Demo"
+    }
+  ],
+  "favourites": [
+    {
+      "id": "favourites-0",
+      "name": "Northbank Athletic",
+      "detail": "Example followed club",
+      "value": "Following"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alerts-0",
+      "name": "Demo kickoff reminder",
+      "detail": "Northbank v Cinder Vale \u00b7 sample notification",
+      "value": "15:00 UTC"
+    },
+    {
+      "id": "alerts-result",
+      "name": "Demo final score",
+      "detail": "Northbank 2\u20131 Cinder Vale \u00b7 fictional result reminder",
+      "value": "Full time"
+    }
+  ],
+  "account": [
+    {
+      "id": "account-0",
+      "name": "Demo supporter",
+      "detail": "Local preview profile \u00b7 no authenticated account",
+      "value": "Guest"
+    }
+  ]
+}

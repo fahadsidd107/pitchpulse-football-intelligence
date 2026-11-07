@@ -1,4 +1,4 @@
-export interface SystemInfo { name: string; version: string; data_mode: 'MOCK'; football_data_available: false }
+export interface SystemInfo { name: string; version: string; data_mode: 'MOCK' | 'DELAYED'; football_data_available: boolean }
 export interface ReadyInfo { status: 'ready'; dependencies: { postgresql: 'up' } }
 const base = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1').replace(/\/$/, '')
 async function get(path: string): Promise<unknown> {
@@ -16,7 +16,7 @@ async function get(path: string): Promise<unknown> {
 }
 export async function loadSystem(): Promise<SystemInfo> {
   const value = await get('/system') as Partial<SystemInfo> | null
-  if (!value || typeof value.name !== 'string' || typeof value.version !== 'string' || value.data_mode !== 'MOCK' || value.football_data_available !== false) throw new Error('The API returned an unsupported system response.')
+  if (!value || typeof value.name !== 'string' || typeof value.version !== 'string' || !['MOCK', 'DELAYED'].includes(value.data_mode ?? '') || typeof value.football_data_available !== 'boolean') throw new Error('The API returned an unsupported system response.')
   return value as SystemInfo
 }
 export async function loadReadiness(): Promise<ReadyInfo> {

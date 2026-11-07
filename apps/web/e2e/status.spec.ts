@@ -3,7 +3,6 @@ test('connects to the real API and database', async ({ page }) => {
   await page.goto('/system')
   await expect(page.getByText('Connected and ready')).toBeVisible()
   await expect(page.getByText('PostgreSQL connected')).toBeVisible()
-  await expect(page.getByText(/DEMO|MOCK/i).first()).toBeVisible()
   await page.getByRole('button', { name: 'Check again' }).click()
   await expect(page.getByText('Connected and ready')).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)

@@ -11,3 +11,7 @@ No blockers remain for Steps 01–02. Step 01 passed strict prerequisites in a c
 - Live provider/AI credentials and paid tracking access are not required for mock development.
 
 Next: Step 03 — Stadium Noir design system and Three.js shell.
+
+## 2026-11-07 extension
+
+Football-data.org adapter is implemented and tested with a local authenticated stub. Real account access awaits the user’s root `.env` API key. Free results are delayed. Step 03 final browser regression is in progress.

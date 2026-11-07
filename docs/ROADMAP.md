@@ -796,3 +796,23 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 - Architecture/API/docs updated: retained the user's architecture contract; added current implementation status, ADR-0001 reconciling executable layout, local development diagram, HTTP/OpenAPI contracts and startup/recovery runbook.
 - Step status: COMPLETE (7% planned cumulative scope coverage).
 - Next exact step and first action: Step 03 — implement Stadium Noir design tokens/primitives and responsive navigation before adding the Three.js shell. Await explicit instruction before starting Step 03.
+
+### Session update — 2026-11-07
+
+- Target: finish Step 03 plus explicitly requested free-provider integration.
+- Implemented: responsive Stadium Noir shell, reusable primitives, lazy Three/Tres stadium, hypothetical interactive plays, reduced-motion fallback; server-side football-data.org matchday adapter and fixture selection/filtering.
+- Verified: 10 frontend unit tests, 7 API tests, TypeScript, lint and production build passed. Browser acceptance rerun in progress.
+- Provider activation: add `FOOTBALL_DATA_API_KEY` to ignored root `.env` and restart API. Real-provider access cannot be verified without the user’s key; authenticated mapping/cache behavior is tested against a local stub.
+- Step 03 checkbox remains pending final browser acceptance. Subsequent roadmap stages are not marked complete by this focused provider addition.
+
+### Session update — Step 04 implementation
+
+- Added transactional initial schema and explicit down SQL; deterministic idempotent seed; Rust typed EntityId; parameterized catalogue repository; migration/seed command and isolated-schema lifecycle test.
+- Frontend catalogue consumes persisted seeded sections; supported provider sections switch to delayed observations when the root API key is configured. Unsupported domains remain explicitly fictional demos.
+- Validation is in progress; Step 04 remains unchecked until migration lifecycle and browser acceptance pass.
+
+### Step 04 verification evidence
+
+- Isolated PostgreSQL lifecycle check passed: up migration, idempotent seed, 120-player/20-fixture assertions, invalid-fixture constraint, down migration, recreate and reseed, then rollback verification transaction.
+- Frontend lint, TypeScript and 11 unit tests passed. Final Rust build and browser acceptance are pending.
+- All route catalogues now have persisted fictional seed rows, including utility previews. Key-enabled competitions/clubs/scorers replace demo rows, while unsupported domains remain MOCK.

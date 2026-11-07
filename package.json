@@ -3,6 +3,14 @@
   "private": true,
   "license": "UNLICENSED",
   "packageManager": "pnpm@11.25.0",
-  "engines": { "node": "24.22.1", "pnpm": "11.25.0" },
-  "scripts": { "check:prerequisites": "bash scripts/check-prerequisites" }
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": "11.25.0"
+  },
+  "scripts": {
+    "check:prerequisites": "bash scripts/check-prerequisites",
+    "dev": "node dev.mjs",
+    "dev:full": "node dev.mjs --full",
+    "dev:stop": "docker compose stop"
+  }
 }

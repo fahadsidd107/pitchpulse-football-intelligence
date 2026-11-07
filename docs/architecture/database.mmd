@@ -1,0 +1,8 @@
+erDiagram
+ competitions ||--o{ seasons : contains
+ seasons ||--o{ fixtures : schedules
+ clubs ||--o{ player_memberships : employs
+ players ||--o{ player_memberships : joins
+ fixtures ||--o{ fixture_events : revises
+ fixtures ||--o{ lineups : selects
+ users ||--o{ sessions : owns

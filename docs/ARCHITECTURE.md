@@ -1019,3 +1019,7 @@ Before marking completion:
 ## 20. Final architectural principle
 
 PitchPulse's engineering advantage is not using many technologies—it is using **each technology for a defensible purpose**, with clear source provenance, reproducible systems, correct event processing, honest AI answers and trustworthy user interactions. The platform must remain useful using fully labeled deterministic mock JSON, while preserving a clean migration path to licensed real-time football feeds.
+
+## Implemented extension — 2026-11-07
+
+The shell includes an interactive Three/Tres stadium with selectable hypothetical plays and static accessible fallback. The matchday adapter adds `/api/v1/matchday` using server-only `FOOTBALL_DATA_API_KEY`, fixed upstream, shared 60-second cache, safe errors and stale labeling. Data is fictional MOCK without a key, and DELAYED with football-data.org. No provider entitlement or live tracking is implied. See [matchday contract](api/matchday.md).

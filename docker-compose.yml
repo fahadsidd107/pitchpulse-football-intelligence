@@ -23,6 +23,7 @@ services:
       timeout: 3s
       retries: 20
   kafka:
+    profiles: [messaging]
     image: apache/kafka:4.0.1
     ports: ["127.0.0.1:${KAFKA_PORT:-9092}:9092"]
     environment:
@@ -39,7 +40,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_LOG_DIRS: /var/lib/kafka/data
-      KAFKA_HEAP_OPTS: -Xms256m -Xmx512m
+      KAFKA_HEAP_OPTS: -Xms128m -Xmx384m
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
     volumes: ["kafka_data:/var/lib/kafka/data"]
     healthcheck:
@@ -49,8 +50,10 @@ services:
       retries: 20
       start_period: 30s
   rabbitmq:
+    profiles: [messaging]
     image: rabbitmq:4.1.4-management-alpine
     environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+S 2:2"
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-pitchpulse}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?Set RABBITMQ_DEFAULT_PASS in .env}
     ports: ["127.0.0.1:${RABBITMQ_PORT:-5672}:5672", "127.0.0.1:${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"]

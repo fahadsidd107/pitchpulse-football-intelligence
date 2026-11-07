@@ -1,3 +1,4 @@
+mod matchday;
 use axum::{
     Json, Router,
     extract::{Request, State},
@@ -14,6 +15,7 @@ use tower_http::cors::CorsLayer;
 
 #[derive(Clone)]
 struct AppState {
+    feed: matchday::Feed,
     pool: PgPool,
 }
 fn error(status: StatusCode, code: &str, message: &str) -> Response {
@@ -70,6 +72,8 @@ pub fn router(config: &Config, pool: PgPool) -> Router {
         .route("/api/v1/health/live", get(live))
         .route("/api/v1/health/ready", get(ready))
         .route("/api/v1/system", get(system))
+        .route("/api/v1/matchday", get(matchday::fixtures))
+        .route("/api/v1/catalogue", get(catalogue))
         .fallback(|| async { error(StatusCode::NOT_FOUND, "NOT_FOUND", "Resource not found.") })
         .method_not_allowed_fallback(|| async {
             error(
@@ -78,7 +82,10 @@ pub fn router(config: &Config, pool: PgPool) -> Router {
                 "Method not allowed.",
             )
         })
-        .with_state(AppState { pool })
+        .with_state(AppState {
+            pool,
+            feed: matchday::Feed::new(std::env::var("FOOTBALL_DATA_API_KEY").ok()),
+        })
         .layer(middleware::from_fn_with_state(
             config.request_timeout,
             request_context,
@@ -99,10 +106,10 @@ async fn ready(State(state): State<AppState>) -> Response {
         )
     }
 }
-async fn system() -> Json<Value> {
+async fn system(State(state): State<AppState>) -> Json<Value> {
     let info = pitchpulse_application::system_info();
     Json(
-        json!({"name": info.name, "version": env!("CARGO_PKG_VERSION"), "data_mode": info.data_mode.as_str(), "football_data_available": info.football_data_available}),
+        json!({"name": info.name, "version": env!("CARGO_PKG_VERSION"), "data_mode": state.feed.mode(), "football_data_available": state.feed.has_observations().await}),
     )
 }
 #[cfg(test)]
@@ -209,4 +216,18 @@ mod tests {
             .unwrap();
         assert_eq!(response.status(), StatusCode::NOT_FOUND);
     }
+}
+
+async fn catalogue(
+    State(state): State<AppState>,
+    axum::extract::Query(query): axum::extract::Query<std::collections::HashMap<String, String>>,
+) -> Response {
+    let section = query.get("section").map(String::as_str).unwrap_or("clubs");
+    if let Some(response) = state.feed.catalogue(section).await {
+        return response;
+    }
+    match pitchpulse_infrastructure::catalogue(&state.pool,section).await{
+ Ok(rows)=>Json(json!({"mode":"MOCK","items":rows.into_iter().map(|(id,name,detail,value)|json!({"id":id,"name":name,"detail":detail,"value":value})).collect::<Vec<_>>()})).into_response(),
+ Err(_)=>error(StatusCode::SERVICE_UNAVAILABLE,"CATALOGUE_UNAVAILABLE","The catalogue is temporarily unavailable.")
+ }
 }

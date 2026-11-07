@@ -32,8 +32,8 @@ onMounted(() => { void status.refresh() })
       </div>
     </section>
     <section class="mt-8 border-l-2 border-slate-600 pl-5">
-      <h2 class="font-semibold">Football data comes next</h2>
-      <p class="mt-2 max-w-2xl leading-relaxed text-slate-400">No fixtures or live scores are available yet. Future demo matches will use clearly labeled fictional data. This check confirms the development foundation only.</p>
+      <h2 class="font-semibold">Matchday coverage</h2>
+      <p class="mt-2 max-w-2xl leading-relaxed text-slate-400">The match centre identifies its source: fictional demo fixtures or delayed football-data.org results. API readiness checks the database independently of the football provider.</p>
     </section>
   </main>
 </template>

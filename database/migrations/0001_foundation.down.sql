@@ -1,0 +1,1 @@
+DROP TABLE demo_catalogue,event_outbox,idempotency_keys,news_metadata,fantasy_seasons,simulation_runs,rating_models,user_preferences,sessions,users,provider_coverage,provider_mappings,player_stats,team_stats,lineups,fixture_events,fixtures,player_seasons,player_memberships,players,club_seasons,clubs,stages,seasons,competitions;

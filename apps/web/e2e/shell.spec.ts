@@ -78,3 +78,27 @@ for (const route of ['/', '/design-system', '/matches']) {
     expect(results.violations).toEqual([])
   })
 }
+
+test('a tactical selection changes the static play without requiring motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  const stadium = page.locator('.hero')
+  await stadium.getByRole('button', { name: 'Finish', exact: true }).click()
+  await expect(stadium.getByRole('button', { name: 'Finish', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await expect(stadium).toContainText('cutback')
+  await expect(stadium.locator('canvas')).toHaveCount(0)
+})
+
+test('filtering results updates the spotlight and preserves unknown scores', async ({ page }) => {
+  await page.route('**/api/v1/matchday', route => route.fulfill({ json: {
+    mode: 'DELAYED', source: 'football-data.org', fetched_at: 1793404800, stale: false,
+    matches: [{ id: 1, home: 'Test Home', away: 'Test Away', competition: 'Test Cup', kickoff: '2026-10-31T14:00:00Z', status: 'TIMED', home_score: null, away_score: null }],
+  } }))
+  await page.goto('/matches')
+  await expect(page.getByText(/Delayed scores/)).toBeVisible()
+  await expect(page.getByRole('button', { name: /Test Home/ })).toContainText('— : —')
+  await page.getByRole('button', { name: 'Results', exact: true }).click()
+  await expect(page.getByText(/No results fixtures/)).toBeVisible()
+  await page.getByRole('button', { name: 'Upcoming', exact: true }).click()
+  await expect(page.locator('.featured-fixture')).toContainText('Test Home v Test Away')
+})

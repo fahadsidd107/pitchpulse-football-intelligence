@@ -14,7 +14,7 @@ Keep the homepage and destination pages honest about the unavailable data. Globa
 
 Use the six Stadium Noir brand colors with accessible neutral text, explicit focus styles, semantic landmarks and responsive navigation. Use Vue component state for ephemeral menu/dialog controls and retain Pinia for API status. No duplicate state libraries are introduced.
 
-A schematic pitch is a progressive enhancement: the baseline is a static SVG. Only a visible hero on a motion-enabled, WebGL-capable browser imports the TresJS/Three.js scene. Render on demand, cap device pixel ratio at 1.5, dispose geometries/materials and unmount the scene offscreen. Motion preference changes or context failure return to the static view. There is no ball, tracked player, result or provider claim.
+A schematic pitch is a progressive enhancement: the baseline is a static SVG. Only a visible hero on a motion-enabled, WebGL-capable browser imports the TresJS/Three.js scene. Render on demand, cap device pixel ratio at 1.5, dispose geometries/materials and unmount the scene offscreen. Motion preference changes or context failure return to the static view. User-requested tactical demonstrations add an explicitly hypothetical ball/pass path with three selectable plays. The motion can be paused and stops in hidden tabs; updates are capped at 30 Hz. No observed tracking is claimed.
 
 ## Alternatives
 
