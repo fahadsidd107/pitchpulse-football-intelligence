@@ -816,3 +816,10 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 - Isolated PostgreSQL lifecycle check passed: up migration, idempotent seed, 120-player/20-fixture assertions, invalid-fixture constraint, down migration, recreate and reseed, then rollback verification transaction.
 - Frontend lint, TypeScript and 11 unit tests passed. Final Rust build and browser acceptance are pending.
 - All route catalogues now have persisted fictional seed rows, including utility previews. Key-enabled competitions/clubs/scorers replace demo rows, while unsupported domains remain MOCK.
+
+### Rolling mock provider integration — increment 1
+
+- Read the supplied kit README and CODEX_INTEGRATION.md against existing architecture.
+- Added bounded, allowlisted Rust reference-provider boundary at /api/v1/football/* with simulated provenance checks and explicit unsupported-real behavior.
+- Launcher starts the loopback-only reference service. Corrected UTC parsing compatibility and added month/year/leap-day tests; all 9 kit tests passed.
+- Match Center/replay frontend integration in progress. Kafka publication, PostgreSQL projection, Redis active-state and WebSocket delivery remain unfinished and unchecked. No later business-engine milestone is marked complete by importing example data.

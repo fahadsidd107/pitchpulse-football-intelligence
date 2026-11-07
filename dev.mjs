@@ -41,9 +41,10 @@ try{
  process.env.VITE_API_BASE_URL='http://'+host+':'+port+'/api/v1'
  console.log('Using API '+process.env.VITE_API_BASE_URL)
  const full=process.argv.includes('--full')
- if(!full)await run('docker',['compose','stop','kafka','rabbitmq'])
+ const pipeline=process.env.DEV_PIPELINE!=='false'
+ if(!full)await run('docker',['compose','stop',...(pipeline?['rabbitmq']:['kafka','rabbitmq'])])
  console.log(full?'Starting all infrastructure…':'Starting PostgreSQL and Redis (current app dependencies)…')
- await run('docker',['compose','up','-d','--wait','--wait-timeout','90',...(full?['postgres','redis','kafka','rabbitmq']:['postgres','redis'])])
+ await run('docker',['compose','up','-d','--wait','--wait-timeout','90',...(full?['postgres','redis','kafka','rabbitmq']:pipeline?['postgres','redis','kafka']:['postgres','redis'])])
  // Reconcile only this Compose-managed local database; preserve its volume.
  const configured = new URL(process.env.DATABASE_URL || 'postgresql://localhost/pitchpulse')
  if (!['localhost','127.0.0.1','[::1]'].includes(configured.hostname)) throw new Error('npm run dev expects a local Compose DATABASE_URL; remote credentials will not be changed.')
@@ -59,8 +60,17 @@ try{
  console.log('Local PostgreSQL credentials synchronized; existing data preserved.')
  if(!existsSync('node_modules')||!existsSync('apps/web/node_modules'))await run('pnpm',['install','--frozen-lockfile'])
  console.log('Building API and database tools (cached after first run)…')
- await run('cargo',['build','--locked','-p','pitchpulse-api','-p','pitchpulse-infrastructure','--bins'])
+ await run('cargo',['build','--locked','-p','pitchpulse-api','-p','pitchpulse-infrastructure','-p','pitchpulse-ingest-worker','-p','pitchpulse-event-consumer','--bins'])
  await run(join(root,'target/debug/database'),[])
+ if((process.env.APP_DATA_MODE||'mock')==='mock'){
+  await run('python3',[join(root,'pitchpulse-data/scripts/mock_server.py')],true)
+  await ready('http://127.0.0.1:8089/health',20)
+ }
+ if(pipeline){
+  await run('docker',['compose','exec','-T','kafka','/opt/kafka/bin/kafka-topics.sh','--bootstrap-server','localhost:19092','--create','--if-not-exists','--topic','pitchpulse.football.v1','--partitions','3','--replication-factor','1'])
+  await run(join(root,'target/debug/pitchpulse-event-consumer'),[],true)
+  await run(join(root,'target/debug/pitchpulse-ingest-worker'),[],true)
+ }
  await run(join(root,'target/debug/pitchpulse-api'),[],true)
  await ready('http://'+(process.env.API_HOST||'127.0.0.1')+':'+(process.env.API_PORT||'3000')+'/health/ready',20)
  await run('pnpm',['--dir','apps/web','dev'],true)

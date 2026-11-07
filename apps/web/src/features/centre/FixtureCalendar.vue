@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { computed,onBeforeUnmount,onMounted,ref,watch } from 'vue'
+import { football,type Competition,type Fixture } from './football'
+defineEmits<{select:[fixture:Fixture]}>()
+const date=ref(new Date().toISOString().slice(0,10)),competition=ref(''),competitions=ref<Competition[]>([]),rows=ref<Fixture[]>([]),page=ref(1),pages=ref(1),error=ref(''),busy=ref(false)
+const dates=computed(()=>new Intl.DateTimeFormat(undefined,{timeZone:'UTC',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}))
+const lifetime=new AbortController();let current:AbortController|undefined
+onMounted(async()=>{try{competitions.value=(await football<Competition[]>('competitions?limit=100',lifetime.signal)).data}catch{/* The date browser remains usable if competition metadata is unavailable. */}})
+async function load(){current?.abort();const active=new AbortController();current=active;busy.value=true;error.value='';rows.value=[]
+try{const q=new URLSearchParams({from:date.value,to:date.value,page:String(page.value),limit:'12'});if(competition.value)q.set('competition',competition.value);const result=await football<Fixture[]>('fixtures?'+q,active.signal);if(active!==current)return;rows.value=result.data;pages.value=result.pagination?.pages??1}catch{if(active===current)error.value='Could not load the calendar.'}finally{if(active===current)busy.value=false}}
+watch([date,competition],()=>{if(page.value===1)void load();else page.value=1});watch(page,load,{immediate:true});onBeforeUnmount(()=>{current?.abort();current=undefined;lifetime.abort()})
+</script>
+<template><section class="calendar-desk"><h3>Fixture calendar</h3><p>Browse the rolling schedule in UTC. Fixtures and competition assignments are simulated.</p><div class="centre-controls"><label>Date (UTC)<input v-model="date" type="date"></label><label>Competition<select v-model="competition"><option value="">All competitions</option><option v-for="c in competitions" :key="c.id" :value="c.id">{{ c.name }}</option></select></label></div><p v-if="busy" role="status">Loading fixtures…</p><p v-else-if="error">{{ error }} <button @click="load">Retry</button></p><p v-else-if="!rows.length">No simulated fixtures in this selection.</p><div v-else class="fixture-picker"><button v-for="f in rows" :key="f.id" @click="$emit('select',f)">{{ f.home_team_name }} v {{ f.away_team_name }} <small>{{ dates.format(new Date(f.kickoff_utc)) }} UTC</small></button></div><div v-if="pages>1" class="centre-controls"><button :disabled="page<=1" @click="page--">Previous</button><span>Page {{ page }} / {{ pages }}</span><button :disabled="page>=pages" @click="page++">Next</button></div></section></template>

@@ -1,3 +1,5 @@
+mod football;
+mod live;
 mod matchday;
 use axum::{
     Json, Router,
@@ -74,6 +76,9 @@ pub fn router(config: &Config, pool: PgPool) -> Router {
         .route("/api/v1/system", get(system))
         .route("/api/v1/matchday", get(matchday::fixtures))
         .route("/api/v1/catalogue", get(catalogue))
+        .route("/api/v1/football/{*path}", get(football::get))
+        .route("/api/v1/football/ws/{id}", get(live::socket))
+        .route("/api/v1/football/projection/{id}", get(live::projection))
         .fallback(|| async { error(StatusCode::NOT_FOUND, "NOT_FOUND", "Resource not found.") })
         .method_not_allowed_fallback(|| async {
             error(
@@ -112,6 +117,21 @@ async fn system(State(state): State<AppState>) -> Json<Value> {
         json!({"name": info.name, "version": env!("CARGO_PKG_VERSION"), "data_mode": state.feed.mode(), "football_data_available": state.feed.has_observations().await}),
     )
 }
+
+async fn catalogue(
+    State(state): State<AppState>,
+    axum::extract::Query(query): axum::extract::Query<std::collections::HashMap<String, String>>,
+) -> Response {
+    let section = query.get("section").map(String::as_str).unwrap_or("clubs");
+    if let Some(response) = state.feed.catalogue(section).await {
+        return response;
+    }
+    match pitchpulse_infrastructure::catalogue(&state.pool,section).await{
+ Ok(rows)=>Json(json!({"mode":"MOCK","items":rows.into_iter().map(|(id,name,detail,value)|json!({"id":id,"name":name,"detail":detail,"value":value})).collect::<Vec<_>>()})).into_response(),
+ Err(_)=>error(StatusCode::SERVICE_UNAVAILABLE,"CATALOGUE_UNAVAILABLE","The catalogue is temporarily unavailable.")
+ }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -216,18 +236,4 @@ mod tests {
             .unwrap();
         assert_eq!(response.status(), StatusCode::NOT_FOUND);
     }
-}
-
-async fn catalogue(
-    State(state): State<AppState>,
-    axum::extract::Query(query): axum::extract::Query<std::collections::HashMap<String, String>>,
-) -> Response {
-    let section = query.get("section").map(String::as_str).unwrap_or("clubs");
-    if let Some(response) = state.feed.catalogue(section).await {
-        return response;
-    }
-    match pitchpulse_infrastructure::catalogue(&state.pool,section).await{
- Ok(rows)=>Json(json!({"mode":"MOCK","items":rows.into_iter().map(|(id,name,detail,value)|json!({"id":id,"name":name,"detail":detail,"value":value})).collect::<Vec<_>>()})).into_response(),
- Err(_)=>error(StatusCode::SERVICE_UNAVAILABLE,"CATALOGUE_UNAVAILABLE","The catalogue is temporarily unavailable.")
- }
 }

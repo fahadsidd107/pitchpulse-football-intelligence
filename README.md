@@ -62,3 +62,9 @@ Use the pinned Node version (`nvm use`), then run `npm run dev` from the reposit
 Kafka and RabbitMQ are optional messaging services until their processing milestones; default startup stops existing project broker containers to free resources. `npm run dev:full` starts them too. `npm run dev:stop` stops all project containers without deleting volumes. First startup downloads dependencies/builds Rust; subsequent launches reuse caches. Broker health failures no longer block the default app.
 
 If Node selection fails, run `nvm install 24 && nvm use 24`, then `npm run dev`. The project accepts Node 24 patch releases; an exact patch installation is not required.
+
+## Rolling simulated football kit
+
+The local `pitchpulse-data` kit supplies an always-active synthetic match schedule. `npm run dev` starts its loopback service and the Rust adapter exposes `/api/v1/football/*`. Visit `/matches` for the rolling calendar and Match Center with events, lineups, evidence lookup and deterministic 2D/3D ball replay. All scores, players and tracking are synthetic.
+
+This is the first provider/Match Center increment. Kafka ingestion, persisted projections, Redis live state, WebSocket recovery, computed ratings and fantasy/prediction settlement are not yet implemented by this integration. See `docs/data-sources/rolling-provider.md` for actual boundaries and remaining work.

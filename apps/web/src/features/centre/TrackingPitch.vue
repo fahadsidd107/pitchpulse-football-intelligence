@@ -1,0 +1,12 @@
+<script setup lang="ts">
+import { defineAsyncComponent, onBeforeUnmount, onErrorCaptured, onMounted, ref } from 'vue'
+defineProps<{point:{x:number;y:number}|null}>()
+const Scene=defineAsyncComponent(()=>import('./TrackingScene.vue'))
+const three=ref(false), available=ref(false), visible=ref(true), host=ref<HTMLElement>(); let media:MediaQueryList; let observer:IntersectionObserver|undefined
+function enable(){try{const gl=document.createElement('canvas').getContext('webgl2'); if(!gl)return; gl.getExtension('WEBGL_lose_context')?.loseContext();three.value=true}catch{three.value=false}}
+function motion(){available.value=!media.matches && 'WebGL2RenderingContext' in window; if(!available.value)three.value=false}
+function fail(){three.value=false;available.value=false}
+onMounted(()=>{media=window.matchMedia('(prefers-reduced-motion: reduce)');motion();media.addEventListener('change',motion);if('IntersectionObserver' in window){observer=new IntersectionObserver(entries=>{visible.value=!!entries[0]?.isIntersecting});observer.observe(host.value!)}})
+onBeforeUnmount(()=>{media?.removeEventListener('change',motion);observer?.disconnect()});onErrorCaptured(()=>{fail();return false})
+</script>
+<template><figure ref="host" class="tracking-figure"><div class="tracking-stage" @webglcontextlost.capture.prevent="fail"><Scene v-if="three && visible" :point="point" @failed="fail" /><svg v-else viewBox="0 0 110 74" role="img" :aria-label="point ? 'Simulated ball position on pitch' : 'Tracking unavailable at this time'"><rect x="5" y="5" width="100" height="64" fill="#326354" stroke="#b5ddc9" stroke-width=".5" /><path d="M55 5V69 M5 21H19V53H5 M105 21H91V53H105" fill="none" stroke="#b5ddc9" stroke-width=".5" /><circle cx="55" cy="37" r="8.5" fill="none" stroke="#b5ddc9" stroke-width=".5" /><circle v-if="point" :cx="5+point.x*100" :cy="5+point.y*64" r="1.8" fill="#bcff63" stroke="#143a29" stroke-width=".5" /></svg></div><figcaption><span>{{ point ? 'Simulated ball · interpolated between 5-second samples' : 'No tracking sample at this time' }}</span><button v-if="available" class="text-link" @click="three ? three=false : enable()">{{ three ? 'View in 2D' : 'View in 3D' }}</button></figcaption></figure></template>

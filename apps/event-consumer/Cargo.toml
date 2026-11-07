@@ -7,3 +7,5 @@ publish.workspace = true
 [dependencies]
 pitchpulse-shared = { path = "../../crates/shared" }
 tokio.workspace = true
+
+pitchpulse-infrastructure = { path = "../../crates/infrastructure" }

@@ -1,0 +1,528 @@
+{
+  "live_matches": [
+    {
+      "id": "demo-5ae8d4929c3641f",
+      "competition_id": "uefa-uel",
+      "home_team_id": "eng-d1-1-07",
+      "away_team_id": "eng-d1-1-05",
+      "home_team_name": "Newcastle United",
+      "away_team_name": "Manchester United",
+      "home_score_final": 2,
+      "away_score_final": 3,
+      "kickoff_utc": "2026-11-07T00:00:00Z",
+      "round": "Always-On Demo Rotation 332224",
+      "mode": "always_on",
+      "venue": "Newcastle United Demo Stadium",
+      "coverage": {
+        "timeline": true,
+        "statistics": true,
+        "lineups": true,
+        "tracking": "synthetic_5s",
+        "voice_ai_context": true
+      },
+      "data_mode": "simulated",
+      "is_real_live_data": false,
+      "clock_rate": 1.0,
+      "showcase": true,
+      "status": "live_demo",
+      "clock_seconds": 2446,
+      "minute": 40,
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "demo-46396499c6a8398",
+      "competition_id": "uefa-uecl",
+      "home_team_id": "eng-d1-1-19",
+      "away_team_id": "eng-d1-1-02",
+      "home_team_name": "England Athletic 1-19",
+      "away_team_name": "Chelsea",
+      "home_score_final": 2,
+      "away_score_final": 1,
+      "kickoff_utc": "2026-11-07T00:00:00Z",
+      "round": "Always-On Demo Rotation 332224",
+      "mode": "always_on",
+      "venue": "England Athletic 1-19 Demo Stadium",
+      "coverage": {
+        "timeline": true,
+        "statistics": true,
+        "lineups": true,
+        "tracking": "synthetic_5s",
+        "voice_ai_context": true
+      },
+      "data_mode": "simulated",
+      "is_real_live_data": false,
+      "clock_rate": 1.0,
+      "showcase": true,
+      "status": "live_demo",
+      "clock_seconds": 2446,
+      "minute": 40,
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "demo-1db44bb424bcbae",
+      "competition_id": "ita-d1",
+      "home_team_id": "ita-d1-1-16",
+      "away_team_id": "ita-d1-1-02",
+      "home_team_name": "Italy Athletic 1-16",
+      "away_team_name": "AC Milan",
+      "home_score_final": 4,
+      "away_score_final": 2,
+      "kickoff_utc": "2026-11-07T00:00:00Z",
+      "round": "Always-On Demo Rotation 332224",
+      "mode": "always_on",
+      "venue": "Italy Athletic 1-16 Demo Stadium",
+      "coverage": {
+        "timeline": true,
+        "statistics": true,
+        "lineups": true,
+        "tracking": "synthetic_5s",
+        "voice_ai_context": true
+      },
+      "data_mode": "simulated",
+      "is_real_live_data": false,
+      "clock_rate": 1.0,
+      "showcase": true,
+      "status": "live_demo",
+      "clock_seconds": 2446,
+      "minute": 40,
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "demo-51384d1e6055a84",
+      "competition_id": "fra-d1",
+      "home_team_id": "fra-d1-1-09",
+      "away_team_id": "fra-d1-1-16",
+      "home_team_name": "Strasbourg",
+      "away_team_name": "France Athletic 1-16",
+      "home_score_final": 2,
+      "away_score_final": 1,
+      "kickoff_utc": "2026-11-07T00:00:00Z",
+      "round": "Always-On Demo Rotation 332224",
+      "mode": "always_on",
+      "venue": "Strasbourg Demo Stadium",
+      "coverage": {
+        "timeline": true,
+        "statistics": true,
+        "lineups": true,
+        "tracking": "synthetic_5s",
+        "voice_ai_context": true
+      },
+      "data_mode": "simulated",
+      "is_real_live_data": false,
+      "clock_rate": 1.0,
+      "showcase": true,
+      "status": "live_demo",
+      "clock_seconds": 2446,
+      "minute": 40,
+      "home_score": 0,
+      "away_score": 1
+    }
+  ],
+  "news": [
+    {
+      "id": "news-demo-001",
+      "title": "Demo update: Arsenal prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-01",
+      "published_at": "2026-11-06T23:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-002",
+      "title": "Demo update: Chelsea prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-02",
+      "published_at": "2026-11-06T21:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-003",
+      "title": "Demo update: Liverpool prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-03",
+      "published_at": "2026-11-06T19:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-004",
+      "title": "Demo update: Manchester City prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-04",
+      "published_at": "2026-11-06T17:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-005",
+      "title": "Demo update: Manchester United prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-05",
+      "published_at": "2026-11-06T15:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-006",
+      "title": "Demo update: Tottenham Hotspur prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-06",
+      "published_at": "2026-11-06T13:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-007",
+      "title": "Demo update: Newcastle United prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-07",
+      "published_at": "2026-11-06T11:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-008",
+      "title": "Demo update: Aston Villa prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-08",
+      "published_at": "2026-11-06T09:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-009",
+      "title": "Demo update: Brighton prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-09",
+      "published_at": "2026-11-06T07:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-010",
+      "title": "Demo update: West Ham prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-10",
+      "published_at": "2026-11-06T05:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-011",
+      "title": "Demo update: Everton prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-11",
+      "published_at": "2026-11-06T03:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-012",
+      "title": "Demo update: Fulham prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-12",
+      "published_at": "2026-11-06T01:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-013",
+      "title": "Demo update: Brentford prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-13",
+      "published_at": "2026-11-05T23:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-014",
+      "title": "Demo update: Nottingham Forest prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-14",
+      "published_at": "2026-11-05T21:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-015",
+      "title": "Demo update: Wolverhampton prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-15",
+      "published_at": "2026-11-05T19:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-016",
+      "title": "Demo update: Crystal Palace prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-16",
+      "published_at": "2026-11-05T17:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-017",
+      "title": "Demo update: England Athletic 1-17 prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-17",
+      "published_at": "2026-11-05T15:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-018",
+      "title": "Demo update: England Athletic 1-18 prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-18",
+      "published_at": "2026-11-05T13:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-019",
+      "title": "Demo update: England Athletic 1-19 prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-19",
+      "published_at": "2026-11-05T11:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "news-demo-020",
+      "title": "Demo update: England Athletic 1-20 prepare for upcoming football fixtures",
+      "club_id": "eng-d1-1-20",
+      "published_at": "2026-11-05T09:40:46.903918Z",
+      "source": "PitchPulse fictional demo newsroom",
+      "url": null,
+      "is_fictional": true,
+      "data_mode": "simulated"
+    }
+  ],
+  "transfers": [
+    {
+      "id": "transfer-demo-000",
+      "player_id": "p-eng-d1-1-04-20",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "eng-d2-2-21",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-07T00:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-001",
+      "player_id": "p-eng-d1-1-04-21",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "eng-d3-3-14",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T21:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-002",
+      "player_id": "p-eng-d1-1-04-22",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "esp-d1-1-07",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T18:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-003",
+      "player_id": "p-eng-d1-1-04-23",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "esp-d2-2-04",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-06T15:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-004",
+      "player_id": "p-eng-d1-1-04-24",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "esp-d2-2-21",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T12:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-005",
+      "player_id": "p-eng-d1-1-04-25",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "esp-d3-3-16",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T09:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-006",
+      "player_id": "p-eng-d1-1-04-26",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "esp-d3-3-33",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-06T06:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-007",
+      "player_id": "p-eng-d1-1-04-27",
+      "from_club_id": "eng-d1-1-04",
+      "to_club_id": "ger-d1-1-10",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T03:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-008",
+      "player_id": "p-eng-d1-1-05-01",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ger-d2-2-09",
+      "status": "rumour_demo",
+      "published_at": "2026-11-06T00:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-009",
+      "player_id": "p-eng-d1-1-05-02",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ger-d3-3-08",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-05T21:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-010",
+      "player_id": "p-eng-d1-1-05-03",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ita-d1-1-05",
+      "status": "rumour_demo",
+      "published_at": "2026-11-05T18:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-011",
+      "player_id": "p-eng-d1-1-05-04",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ita-d2-2-02",
+      "status": "rumour_demo",
+      "published_at": "2026-11-05T15:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-012",
+      "player_id": "p-eng-d1-1-05-05",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ita-d2-2-19",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-05T12:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-013",
+      "player_id": "p-eng-d1-1-05-06",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ita-d3-3-16",
+      "status": "rumour_demo",
+      "published_at": "2026-11-05T09:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-014",
+      "player_id": "p-eng-d1-1-05-07",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "ita-d3-3-33",
+      "status": "rumour_demo",
+      "published_at": "2026-11-05T06:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-015",
+      "player_id": "p-eng-d1-1-05-08",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "fra-d1-1-10",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-05T03:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-016",
+      "player_id": "p-eng-d1-1-05-09",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "fra-d2-2-09",
+      "status": "rumour_demo",
+      "published_at": "2026-11-05T00:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-017",
+      "player_id": "p-eng-d1-1-05-10",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "fra-d3-3-08",
+      "status": "rumour_demo",
+      "published_at": "2026-11-04T21:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-018",
+      "player_id": "p-eng-d1-1-05-11",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "por-d1-1-07",
+      "status": "confirmed_demo_fictional",
+      "published_at": "2026-11-04T18:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    },
+    {
+      "id": "transfer-demo-019",
+      "player_id": "p-eng-d1-1-05-12",
+      "from_club_id": "eng-d1-1-05",
+      "to_club_id": "por-d2-2-06",
+      "status": "rumour_demo",
+      "published_at": "2026-11-04T15:40:46.903918Z",
+      "is_real_transfer": false,
+      "data_mode": "simulated"
+    }
+  ]
+}

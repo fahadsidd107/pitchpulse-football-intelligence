@@ -58,3 +58,4 @@ pub async fn catalogue(
         .fetch_all(pool)
         .await
 }
+pub mod pipeline;

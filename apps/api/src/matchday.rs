@@ -125,10 +125,10 @@ impl Feed {
     pub(super) async fn catalogue(&self, section: &str) -> Option<Response> {
         let key = self.key.as_ref()?;
         let mut cache = self.catalogue_cache.lock().await;
-        if let Some((until, body)) = cache.get(section) {
-            if *until > Instant::now() {
-                return Some(Json(body.clone()).into_response());
-            }
+        if let Some((until, body)) = cache.get(section)
+            && *until > Instant::now()
+        {
+            return Some(Json(body.clone()).into_response());
         }
         let endpoint = match section {
             "competitions" => "https://api.football-data.org/v4/competitions",
