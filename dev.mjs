@@ -37,13 +37,16 @@ try{
  async function available(port){return new Promise(resolve=>{const server=createServer();server.once('error',()=>resolve(false));server.listen(port,host,()=>server.close(()=>resolve(true)))})}
  let port=preferred
  while(!(await available(port))){port++;if(port>preferred+20)throw new Error('No free local API port found.')}
+ let webPort=5173
+ while(!(await available(webPort))){webPort++;if(webPort>5193)throw new Error('No free web port found.')}
+ process.env.PUBLIC_WEB_ORIGIN='http://localhost:'+webPort
  process.env.API_PORT=String(port)
  process.env.VITE_API_BASE_URL='http://'+host+':'+port+'/api/v1'
  console.log('Using API '+process.env.VITE_API_BASE_URL)
  const full=process.argv.includes('--full')
  const pipeline=process.env.DEV_PIPELINE!=='false'
  if(!full)await run('docker',['compose','stop',...(pipeline?['rabbitmq']:['kafka','rabbitmq'])])
- console.log(full?'Starting all infrastructure…':'Starting PostgreSQL and Redis (current app dependencies)…')
+ console.log(full?'Starting all infrastructure…':pipeline?'Starting PostgreSQL, Redis and Kafka…':'Starting PostgreSQL and Redis…')
  await run('docker',['compose','up','-d','--wait','--wait-timeout','90',...(full?['postgres','redis','kafka','rabbitmq']:pipeline?['postgres','redis','kafka']:['postgres','redis'])])
  // Reconcile only this Compose-managed local database; preserve its volume.
  const configured = new URL(process.env.DATABASE_URL || 'postgresql://localhost/pitchpulse')
@@ -59,11 +62,14 @@ try{
  process.env.DATABASE_URL=configured.toString()
  console.log('Local PostgreSQL credentials synchronized; existing data preserved.')
  if(!existsSync('node_modules')||!existsSync('apps/web/node_modules'))await run('pnpm',['install','--frozen-lockfile'])
+ await run('python3',[join(root,'scripts/sync-kit-catalogue.py')])
  console.log('Building API and database tools (cached after first run)…')
  await run('cargo',['build','--locked','-p','pitchpulse-api','-p','pitchpulse-infrastructure','-p','pitchpulse-ingest-worker','-p','pitchpulse-event-consumer','--bins'])
  await run(join(root,'target/debug/database'),[])
  if((process.env.APP_DATA_MODE||'mock')==='mock'){
-  await run('python3',[join(root,'pitchpulse-data/scripts/mock_server.py')],true)
+  let referenceRunning=false
+  try{const response=await fetch('http://127.0.0.1:8089/api/v1/mock/manifest',{signal:AbortSignal.timeout(1000)});const body=await response.json();referenceRunning=response.ok&&body.meta?.is_real_live_data===false&&body.data?.mode==='simulated'}catch{}
+  if(!referenceRunning)await run('python3',[join(root,'pitchpulse-data/scripts/mock_server.py')],true)
   await ready('http://127.0.0.1:8089/health',20)
  }
  if(pipeline){
@@ -73,6 +79,6 @@ try{
  }
  await run(join(root,'target/debug/pitchpulse-api'),[],true)
  await ready('http://'+(process.env.API_HOST||'127.0.0.1')+':'+(process.env.API_PORT||'3000')+'/health/ready',20)
- await run('pnpm',['--dir','apps/web','dev'],true)
- console.log('\nPitchPulse: http://localhost:5173\nCtrl-C stops API and Vue; database volumes and containers remain available.')
+ await run('pnpm',['--dir','apps/web','dev','--port',String(webPort)],true)
+ console.log('\nPitchPulse: http://localhost:'+webPort+'\nCtrl-C stops API and Vue; database volumes and containers remain available.')
 }catch(error){console.error('\nStartup failed: '+error.message);stop(1)}

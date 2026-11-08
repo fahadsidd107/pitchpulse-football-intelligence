@@ -8,7 +8,7 @@ it('renders source scores, resolves squad names, and rewinds events and score to
   const side={formation:'4-3-3',starting_xi:['h-9'],substitutes:[]}
   const bodies:Record<string,unknown>={live:[fixture],'live-state':fixture,events:[incident],lineups:{fixture_id:'sample',home:side,away:side},statistics:{fixture_id:'sample',home:{shots:9},away:{shots:4}},tracking:[{fixture_id:'sample',t_seconds:0,x:.1,y:.1}], 'ai-context':{fixture,events_so_far:[incident],source_is_synthetic:true},squad:[{id:'h-9',name:'Demo Forward'}]}
   vi.stubGlobal('fetch',vi.fn((url:string)=>Promise.resolve(Response.json({data:bodies[new URL(url).pathname.split('/').pop()!],meta:{data_mode:'simulated',is_real_live_data:false}}))))
-  const wrapper=mount(MatchCenter,{global:{stubs:{TrackingPitch:true,FixtureCalendar:true}}})
+  const wrapper=mount(MatchCenter,{global:{stubs:{RouterLink:true,TrackingPitch:true,FixtureCalendar:true}}})
   try {
     await flushPromises()
     expect(wrapper.text()).toContain('SIMULATED DEMO')

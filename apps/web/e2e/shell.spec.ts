@@ -94,7 +94,7 @@ test('filtering results updates the spotlight and preserves unknown scores', asy
     mode: 'DELAYED', source: 'football-data.org', fetched_at: 1793404800, stale: false,
     matches: [{ id: 1, home: 'Test Home', away: 'Test Away', competition: 'Test Cup', kickoff: '2026-10-31T14:00:00Z', status: 'TIMED', home_score: null, away_score: null }],
   } }))
-  await page.goto('/matches')
+  await page.goto('/matches/provider')
   await expect(page.getByText(/Delayed scores/)).toBeVisible()
   await expect(page.getByRole('button', { name: /Test Home/ })).toContainText('— : —')
   await page.getByRole('button', { name: 'Results', exact: true }).click()

@@ -78,6 +78,7 @@ pub fn router(config: &Config, pool: PgPool) -> Router {
         .route("/api/v1/catalogue", get(catalogue))
         .route("/api/v1/football/{*path}", get(football::get))
         .route("/api/v1/football/ws/{id}", get(live::socket))
+        .route("/api/v1/football/computed/{id}", get(live::computed))
         .route("/api/v1/football/projection/{id}", get(live::projection))
         .fallback(|| async { error(StatusCode::NOT_FOUND, "NOT_FOUND", "Resource not found.") })
         .method_not_allowed_fallback(|| async {
@@ -126,10 +127,26 @@ async fn catalogue(
     if let Some(response) = state.feed.catalogue(section).await {
         return response;
     }
-    match pitchpulse_infrastructure::catalogue(&state.pool,section).await{
- Ok(rows)=>Json(json!({"mode":"MOCK","items":rows.into_iter().map(|(id,name,detail,value)|json!({"id":id,"name":name,"detail":detail,"value":value})).collect::<Vec<_>>()})).into_response(),
- Err(_)=>error(StatusCode::SERVICE_UNAVAILABLE,"CATALOGUE_UNAVAILABLE","The catalogue is temporarily unavailable.")
- }
+    let kit: Value =
+        match serde_json::from_str(include_str!("../../web/src/features/catalogue/demo.json")) {
+            Ok(v) => v,
+            Err(_) => {
+                return error(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "INVALID_KIT",
+                    "Kit catalogue unavailable.",
+                );
+            }
+        };
+    match kit.get(section) {
+        Some(rows) => Json(json!({"mode":"SIMULATED","source":"pitchpulse-data","items":rows}))
+            .into_response(),
+        None => error(
+            StatusCode::NOT_FOUND,
+            "UNKNOWN_SECTION",
+            "Unknown catalogue section.",
+        ),
+    }
 }
 
 #[cfg(test)]

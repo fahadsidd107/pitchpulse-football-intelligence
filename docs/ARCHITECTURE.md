@@ -1023,3 +1023,7 @@ PitchPulse's engineering advantage is not using many technologies—it is using 
 ## Implemented extension — 2026-11-07
 
 The shell includes an interactive Three/Tres stadium with selectable hypothetical plays and static accessible fallback. The matchday adapter adds `/api/v1/matchday` using server-only `FOOTBALL_DATA_API_KEY`, fixed upstream, shared 60-second cache, safe errors and stale labeling. Data is fictional MOCK without a key, and DELAYED with football-data.org. No provider entitlement or live tracking is implied. See [matchday contract](api/matchday.md).
+
+## Football, Alive frontend experience
+
+The frontend now includes shared reduced-motion/visibility/reveal primitives; a once-per-session tunnel camera arrival; source-clock-driven match effects; sampled tracking overlays; opt-in local audio visualization; fixed-scale synthetic player comparison; keyboard/pointer formation editing; event-ledger-driven simulation presentation; and source-valued leaderboard transitions. Inter and Space Grotesk are bundled locally. Catalogue fallback JSON is split into lazy section chunks. No backend contract or authoritative match outcome is replaced by animation. See [experience contract](design/FOOTBALL_ALIVE.md), [audit inventory](design/IMMERSIVE_INVENTORY.md) and [verification](design/IMMERSIVE_VERIFICATION.md).

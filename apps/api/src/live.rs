@@ -39,3 +39,27 @@ pub(super) async fn projection(State(state): State<AppState>, Path(id): Path<Str
         ),
     }
 }
+
+pub(super) async fn computed(State(state): State<AppState>, Path(id): Path<String>) -> Response {
+    match sqlx::query_scalar::<_, String>(
+        "SELECT payload::text FROM computed_match_results WHERE fixture_id=$1",
+    )
+    .bind(id)
+    .fetch_optional(&state.pool)
+    .await
+    {
+        Ok(Some(body)) => match serde_json::from_str::<serde_json::Value>(&body) {
+            Ok(v) => Json(v).into_response(),
+            Err(_) => error(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "INVALID_PROJECTION",
+                "Invalid computed projection.",
+            ),
+        },
+        _ => error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "COMPUTATION_PENDING",
+            "Waiting for computed fixture results.",
+        ),
+    }
+}

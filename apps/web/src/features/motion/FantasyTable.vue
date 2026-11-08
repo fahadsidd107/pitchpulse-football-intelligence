@@ -1,0 +1,10 @@
+<script setup lang="ts">
+import {computed,onBeforeUnmount,onMounted,ref} from 'vue'
+import {football} from '../centre/football'
+interface Team{user_id:string;team_name:string;total_points:number;captain_player_id:string;roster_player_ids:string[]}
+const teams=ref<Team[]>([]),old=ref<Record<string,number>>({}),reverse=ref(false),chosen=ref(''),error=ref(''),busy=ref(false);const controller=new AbortController()
+async function load(){busy.value=true;try{const next=await football<Team[]>('fantasy?limit=50',controller.signal);old.value=Object.fromEntries(teams.value.map(t=>[t.user_id,t.total_points]));teams.value=next.data;error.value=''}catch{if(!controller.signal.aborted)error.value='Leaderboard unavailable.'}finally{busy.value=false}}
+const ordered=computed(()=>[...teams.value].sort((a,b)=>b.total_points-a.total_points||a.user_id.localeCompare(b.user_id)).map((team,i)=>({...team,rank:i+1})).sort((a,b)=>reverse.value?b.rank-a.rank:a.rank-b.rank).slice(0,8)),selected=computed(()=>teams.value.find(t=>t.user_id===chosen.value))
+onMounted(load);onBeforeUnmount(()=>controller.abort())
+</script>
+<template><section class="motion-desk"><p class="eyebrow">FANTASY / SIMULATED DEMO</p><h3>The points table.</h3><div class="centre-controls"><button @click="reverse=!reverse">{{ reverse?'Highest first':'Lowest first' }}</button><button :disabled="busy" @click="load">Refresh points</button></div><p v-if="error" role="status">{{ error }}</p><TransitionGroup name="rank" tag="ol" class="rank-board"><li v-for="t in ordered" :key="t.user_id"><button @click="chosen=t.user_id"><span>{{ String(t.rank).padStart(2,'0') }}</span><strong>{{ t.team_name }}</strong><b :key="t.total_points">{{ t.total_points }} pts</b><small v-if="old[t.user_id]!=null && old[t.user_id]!==t.total_points">Δ {{ t.total_points-old[t.user_id]! }}</small></button></li></TransitionGroup><p v-if="selected">{{ selected.team_name }} · Captain {{ selected.captain_player_id }} · {{ selected.roster_player_ids.length }} squad members</p><p>Ranks compare the fetched entries; changes reflect provider points only.</p></section></template>

@@ -346,7 +346,7 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 |---|---|---:|---|
 | 01 | Environment & prerequisites | 3% | Complete |
 | 02 | Rust/Vue workspace and Docker infrastructure | 7% | Complete |
-| 03 | Stadium Noir design system and Three.js shell | 11% | Not started |
+| 03 | Stadium Noir design system and Three.js shell | 11% | Complete |
 | 04 | PostgreSQL schema, migrations and domain model | 15% | Not started |
 | 05 | Axum API, auth, profile and OpenAPI | 20% | Not started |
 | 06 | Mock JSON providers, replay and normalization | 25% | Not started |
@@ -406,7 +406,7 @@ Use typed relationships, constraints, SQLx migrations, transactions, appropriate
 **Verification:** `docker compose up -d`; Rust API `/health` returns OK; Vue page fetches it; CI checks succeed.  
 **What works:** The entire basic stack starts locally and communicates.
 
-### [ ] Step 03 — Stadium Noir design system and 3D application shell (11%)
+### [x] Step 03 — Stadium Noir design system and 3D application shell (11%)
 
 1. Establish brand tokens: background `#0A1519`, surface `#17282D`, lime `#BCFF63`, cyan `#62E0F0`, coral `#FF9786`, ice white `#F5FFF5`; define states, type scales and contrast rules.
 2. Implement reusable accessible card, button, modal, nav, chart wrapper, table, loader, error state, tooltip and match score components.
@@ -823,3 +823,18 @@ Use concrete repo scripts once implemented; do not state commands passed unless 
 - Added bounded, allowlisted Rust reference-provider boundary at /api/v1/football/* with simulated provenance checks and explicit unsupported-real behavior.
 - Launcher starts the loopback-only reference service. Corrected UTC parsing compatibility and added month/year/leap-day tests; all 9 kit tests passed.
 - Match Center/replay frontend integration in progress. Kafka publication, PostgreSQL projection, Redis active-state and WebSocket delivery remain unfinished and unchecked. No later business-engine milestone is marked complete by importing example data.
+
+### Pipeline verification update
+
+- Working increment: Kafka ingest → PostgreSQL message/projection transactions → expiring Redis snapshots → full-state WebSocket snapshots → Vue reconnect/revision handling.
+- Verified event, fixture, computed-result rows and Redis keys; browser showed WebSocket delivery. 42 E2E and 17 frontend tests passed, workspace build/tests passed.
+- Added domain scoring tests and computed event-only rating/fantasy contribution/prediction previews. Full roster/deadline/correction-settlement engines remain unfinished; do not mark Steps 12/18/19 complete.
+- Final fixture rollover publication is implemented; restart/correction/load/retention hardening still needs dedicated integration coverage.
+
+### Football, Alive motion directive — verified frontend increment
+
+- Implemented phases A–H against the supplied directive, preserving routes, source state and simulated provenance. Ten signature interactions are represented with reduced-motion/static alternatives.
+- Completed browser verification: 87/87 desktop/tablet/mobile checks passed. Initial tablet overflow and formation accessible-name findings were fixed.
+- Step 03 is now marked complete based on the responsive shell, reusable components, scene fallbacks, recorded rendering observations and browser acceptance. Later business engines remain at their existing roadmap status.
+- Performance: main entry reduced from 3,002.80 KB raw to approximately 165 KB by lazy-loading the complete kit per section; no claim of universal 60 FPS.
+- Scope: microphone visualizes local input without speech transcription; evidence is deterministic; brackets/tactics are local hypothetical tools and simulator presentation follows its existing illustrative event ledger.

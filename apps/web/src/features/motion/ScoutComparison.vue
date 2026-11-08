@@ -1,0 +1,11 @@
+<script setup lang="ts">
+import {computed,onBeforeUnmount,onMounted,ref} from 'vue'
+import {football} from '../centre/football'
+interface Player {id:string;name:string;position:string;season:string;attributes:Record<string,number>}
+const players=ref<Player[]>([]),a=ref(''),b=ref(''),sameRole=ref(false),error=ref(''),controller=new AbortController()
+async function load(){try{const result=await football<Player[]>('players?limit=100',controller.signal);players.value=result.data.filter(x=>x.attributes&&typeof x.attributes==='object');a.value=players.value[0]?.id??'';b.value=players.value[1]?.id??'';error.value=''}catch{if(!controller.signal.aborted)error.value='Scouting attributes are unavailable.'}}
+const left=computed(()=>players.value.find(p=>p.id===a.value)),pool=computed(()=>players.value.filter(p=>p.id!==a.value&&(!sameRole.value||p.position===left.value?.position))),right=computed(()=>pool.value.find(p=>p.id===b.value)??pool.value[0])
+const metrics=computed(()=>Object.keys(left.value?.attributes??{}).filter(k=>Number.isFinite(right.value?.attributes[k])))
+onMounted(load);onBeforeUnmount(()=>controller.abort())
+</script>
+<template><section class="motion-desk"><p class="eyebrow">SCOUTING ROOM / SIMULATED DEMO</p><h3>Two players. One scale.</h3><p v-if="error">{{ error }} <button @click="load">Retry</button></p><template v-else-if="left && right"><div class="centre-controls"><label>Player A<select v-model="a"><option v-for="p in players" :key="p.id" :value="p.id">{{ p.name }}</option></select></label><label>Player B<select :value="right.id" @change="b=($event.target as HTMLSelectElement).value"><option v-for="p in pool" :key="p.id" :value="p.id">{{ p.name }}</option></select></label><label><input v-model="sameRole" type="checkbox"> Same position</label></div><div class="scout-names"><b>{{ left.name }} <small>{{ left.position }}</small></b><b>{{ right.name }} <small>{{ right.position }}</small></b></div><div v-for="key in metrics" :key="key" class="scout-metric"><label>{{ key }}</label><div v-for="(p,i) in [left,right]" :key="i"><i :style="{width:p.attributes[key]+'%'}"></i><small>{{ p.attributes[key] }}/100</small></div></div><p>{{ left.season }} · Synthetic player attributes. All comparisons use a fixed 0–100 scale; these are not observed ratings.</p></template><p v-else>Loading scouting data…</p></section></template>
