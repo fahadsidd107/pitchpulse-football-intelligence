@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { TresCanvas } from '@tresjs/core'
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { BoxGeometry, BufferGeometry, Float32BufferAttribute, Group, SphereGeometry, Vector3, Line, LineBasicMaterial, LineSegments, Mesh, MeshStandardMaterial, RingGeometry, MeshBasicMaterial, DoubleSide } from 'three'
-import {arrivalPoint,clamp} from '../motion/motion'
+import { BoxGeometry, BufferGeometry, Float32BufferAttribute, Group, SphereGeometry, Vector3, Line, LineBasicMaterial, LineSegments, Mesh, MeshStandardMaterial, RingGeometry, MeshBasicMaterial, DoubleSide, IcosahedronGeometry, EdgesGeometry } from 'three'
+import {clamp} from '../motion/motion'
 import type { Play } from './plays'
-const props = withDefaults(defineProps<{ paused: boolean; skip:number; play?: Play; sequence: number }>(), { play: undefined })
+const props = withDefaults(defineProps<{ paused: boolean; skip:number; play?: Play; sequence: number; hovered:boolean }>(), { play: undefined })
 const emit = defineEmits<{ failed: []; arrival:[phase:'tunnel'|'pitch'] }>()
 const pitch = new Group()
 const resources: { dispose: () => void }[] = []
@@ -67,36 +67,76 @@ function renderPlay(progress: number) {
   const a = points[i]!, b = points[i + 1]!, f = t - i
   ball.position.set(a[0] + (b[0] - a[0]) * f, .42 + Math.sin(Math.PI * f) * .22, a[1] + (b[1] - a[1]) * f)
 }
+// One procedural truncated icosahedron: twelve pentagons and twenty hexagons.
+// Separated face plates expose dark seams, retaining a recognisable football silhouette.
+const orb = new Group()
+const raw = new IcosahedronGeometry(1, 0), attribute = raw.getAttribute('position')
+const vertices: Vector3[] = [], faces: number[][] = []
+for (let offset=0; offset<attribute.count; offset+=3) {
+  const face:number[]=[]
+  for(let n=0;n<3;n++) {
+    const v=new Vector3().fromBufferAttribute(attribute,offset+n).normalize()
+    let index=vertices.findIndex(other=>other.distanceTo(v)<.001)
+    if(index<0){index=vertices.length;vertices.push(v)}face.push(index)
+  }faces.push(face)
+}
+raw.dispose()
+const dark = new MeshStandardMaterial({color:'#13292c',roughness:.35,metalness:.5})
+const ivory = new MeshStandardMaterial({color:'#f5fff5',roughness:.3,metalness:.12})
+const seam = new MeshStandardMaterial({color:'#1a3d3d',roughness:.5,metalness:.7})
+const coreGeometry=new SphereGeometry(1.7,32,24);orb.add(new Mesh(coreGeometry,seam));resources.push(coreGeometry,dark,ivory,seam)
+const cut=(a:number,b:number)=>vertices[a]!.clone().multiplyScalar(2).add(vertices[b]!).normalize().multiplyScalar(2)
+function plate(points:Vector3[],black=false) {
+  const centre=points.reduce((sum,p)=>sum.add(p),new Vector3()).divideScalar(points.length)
+  const inset=points.map(p=>p.clone().sub(centre).multiplyScalar(.965).add(centre))
+  const data:number[]=[]
+  for(let n=0;n<inset.length;n++)data.push(...centre.toArray(),...inset[n]!.toArray(),...inset[(n+1)%inset.length]!.toArray())
+  const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(data,3));geometry.computeVertexNormals()
+  // Triangle winding comes from the source hull; double-sided material keeps caps robust.
+  const mesh=new Mesh(geometry,black?dark:ivory);orb.add(mesh);resources.push(geometry)
+}
+dark.side=DoubleSide;ivory.side=DoubleSide
+vertices.forEach((v,i)=>{
+  const neighbors=[...new Set(faces.filter(f=>f.includes(i)).flat().filter(n=>n!==i))]
+  const axis=vertices[neighbors[0]!]!.clone().sub(v.clone().multiplyScalar(vertices[neighbors[0]!]!.dot(v))).normalize()
+  const second=new Vector3().crossVectors(v,axis)
+  neighbors.sort((a,b)=>Math.atan2(vertices[a]!.dot(second),vertices[a]!.dot(axis))-Math.atan2(vertices[b]!.dot(second),vertices[b]!.dot(axis)))
+  plate(neighbors.map(n=>cut(i,n)),true)
+})
+for(const [a,b,c] of faces as [number,number,number][])plate([cut(a,b),cut(b,a),cut(b,c),cut(c,b),cut(c,a),cut(a,c)])
+orb.scale.setScalar(.085)
+// An architectural outline carries the scene down into the page environment.
+const outlineBox=new BoxGeometry(12.7,.55,9);const outlineGeometry=new EdgesGeometry(outlineBox);outlineBox.dispose();const outlineMaterial=new LineBasicMaterial({color:'#62e0f0',transparent:true,opacity:.5});pitch.add(new LineSegments(outlineGeometry,outlineMaterial));resources.push(outlineGeometry,outlineMaterial)
 const rotation = ref<[number, number, number]>([0, -.15, 0])
+const ballRotation = ref<[number, number, number]>([.2, .25, -.2])
+const ballPosition = ref<[number, number, number]>([0,.36,0])
 function resetPlay() {
-  playTime = 0
-  ball.visible = !!props.play
+  playTime = 0;ball.visible = !!props.play
   playLine.geometry.dispose()
   playLine.geometry = new BufferGeometry().setFromPoints((props.play?.points ?? []).map(([x,z]) => new Vector3(x,.29,z)))
-  renderPlay(props.paused ? 1 : 0)
-  // Invalidate the demand-driven scene even when motion is paused.
-  rotation.value = [...rotation.value]
+  renderPlay(props.paused ? 1 : 0);rotation.value = [...rotation.value]
 }
 watch(() => props.sequence, resetPlay)
-const camera=ref<[number,number,number]>([-12.8,.9,0]), aim=ref<[number,number,number]>([2,.55,0]), lamp=ref<[number,number,number]>([-2,5,3])
-let frame=0,lastFrame=0,arrival=0,pointerX=0,pointerY=0,scroll=0,readyToDraw=false
+const keyIntensity=ref(2)
+const camera=ref<[number,number,number]>([8.8,7.8,13]), aim=ref<[number,number,number]>([0,.6,0]), lamp=ref<[number,number,number]>([-2,8,5])
+let frame=0,lastFrame=0,pointerX=0,pointerY=0,scroll=0,readyToDraw=false,elapsed=0,hoverMix=0
 function sceneFrame(now:number){
   if(props.paused||document.hidden||!readyToDraw)return
   if(now-lastFrame<32){frame=requestAnimationFrame(sceneFrame);return}
-  const dt=Math.min(.08,(now-lastFrame)/1000);lastFrame=now
-  arrival=Math.min(1,arrival+dt/2.6);emit('arrival',arrival<1?'tunnel':'pitch');playTime+=dt;renderPlay(playTime/2.5)
-  const p=arrivalPoint(arrival)
-  camera.value=[p[0]+pointerX*.4*arrival,p[1]+pointerY*.24*arrival+scroll*.4,p[2]+pointerX*.35*arrival]
-  aim.value=[1.4-arrival,.4,0];lamp.value=[-2+pointerX*4,5+pointerY,3]
-  if(arrival<1||(props.play&&playTime<2.65))frame=requestAnimationFrame(sceneFrame)
+  const dt=Math.min(.08,(now-lastFrame)/1000);lastFrame=now;elapsed+=dt
+  playTime+=dt;renderPlay(playTime/2.5);hoverMix+=(Number(props.hovered)-hoverMix)*Math.min(1,dt*5);orb.scale.setScalar(.085+hoverMix*.006);keyIntensity.value=2+hoverMix*.8
+  camera.value=[8.8+pointerX*.85,7.8+pointerY*.65+scroll*.45,13+pointerX*.4]
+  aim.value=[pointerX*.18,.6,0];lamp.value=[-2+pointerX*4,8+pointerY,5]
+  ballRotation.value=[.2+Math.sin(elapsed*.22)*.13+pointerY*.17,elapsed*.16+hoverMix*.35+pointerX*.35,-.2+Math.cos(elapsed*.2)*.1]
+  ballPosition.value=[0,.36,0]
+  frame=requestAnimationFrame(sceneFrame)
 }
 function updateTimer(){cancelAnimationFrame(frame);lastFrame=performance.now()-34;if(!props.paused&&!document.hidden)frame=requestAnimationFrame(sceneFrame)}
 function scrollScene(){scroll=clamp(window.scrollY/650);updateTimer()}
-function ready(){resetPlay();readyToDraw=true;try{if(sessionStorage.getItem('pitchpulse:tunnel-v1'))arrival=1;sessionStorage.setItem('pitchpulse:tunnel-v1','1')}catch{arrival=1}
-  updateTimer();document.addEventListener('visibilitychange',updateTimer);window.addEventListener('scroll',scrollScene,{passive:true})}
-watch(()=>props.skip,()=>{arrival=1;camera.value=arrivalPoint(1);emit('arrival','pitch');updateTimer()});watch(()=>props.paused,updateTimer);watch(()=>props.sequence,updateTimer)
-function move(event:PointerEvent){const bounds=(event.currentTarget as HTMLElement).getBoundingClientRect();pointerX=2*(event.clientX-bounds.left)/bounds.width-1;pointerY=1-2*(event.clientY-bounds.top)/bounds.height;updateTimer()}
+function ready(){resetPlay();readyToDraw=true;emit('arrival','pitch');updateTimer();document.addEventListener('visibilitychange',updateTimer);window.addEventListener('scroll',scrollScene,{passive:true})}
+watch(()=>props.skip,()=>emit('arrival','pitch'));watch(()=>props.paused,updateTimer);watch(()=>props.sequence,updateTimer)
+function move(event:PointerEvent){if(event.pointerType!=='mouse'||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;const bounds=(event.currentTarget as HTMLElement).getBoundingClientRect();pointerX=2*(event.clientX-bounds.left)/bounds.width-1;pointerY=1-2*(event.clientY-bounds.top)/bounds.height;updateTimer()}
 function leave(){pointerX=0;pointerY=0;updateTimer()}
 onBeforeUnmount(() => { cancelAnimationFrame(frame);window.removeEventListener('scroll',scrollScene); document.removeEventListener('visibilitychange', updateTimer); playLine.geometry.dispose(); for (const resource of resources) resource.dispose() })
 </script>
-<template><div class="stadium-canvas" @pointermove="move" @pointerleave="leave"><TresCanvas clear-color="#0c1b20" :alpha="true" :antialias="true" :dpr="[1, 1.5]" :fps-limit="30" render-mode="on-demand" @ready="ready" @error="emit('failed')"><TresPerspectiveCamera :position="camera" :look-at="aim" :fov="58" /><TresAmbientLight :intensity="2" /><TresDirectionalLight :position="lamp" color="#bcff63" :intensity="3" /><TresDirectionalLight :position="[5, 5, -3]" color="#62e0f0" :intensity="3" /><TresGroup :rotation="rotation"><primitive :object="pitch" /></TresGroup></TresCanvas></div></template>
+<template><div class="stadium-canvas" @pointermove="move" @pointerleave="leave"><TresCanvas clear-color="#0c1b20" :alpha="true" :antialias="true" :dpr="[1, 1.5]" :fps-limit="30" render-mode="on-demand" @ready="ready" @error="emit('failed')"><TresPerspectiveCamera :position="camera" :look-at="aim" :fov="43" /><TresAmbientLight :intensity=".8" /><TresDirectionalLight :position="lamp" color="#f5fff5" :intensity="keyIntensity" /><TresDirectionalLight :position="[5, 5, -3]" color="#62e0f0" :intensity="2.5" /><TresPointLight :position="[-4,4,2]" color="#bcff63" :intensity="22" /><TresGroup :rotation="rotation"><primitive :object="pitch" /></TresGroup><TresGroup :position="ballPosition"><primitive :object="orb" :rotation="ballRotation" /></TresGroup></TresCanvas></div></template>

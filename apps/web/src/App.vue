@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { searchSections, sections } from './app/sections'
+import SpatialFeedback from './features/motion/SpatialFeedback.vue'
 import UiModal from './components/ui/UiModal.vue'
 import UiNav from './components/ui/UiNav.vue'
 import CatalogueSearch from './features/catalogue/CatalogueSearch.vue'
@@ -16,6 +17,7 @@ const mobileItems = [sections[0]!, sections[1]!, sections[6]!, sections[9]!]
 watch(() => route.path, async () => { menuOpen.value = false; dialog.value = ''; document.title = `${sections.find(item => item.path === route.path)?.label ?? 'PitchPulse'} · PitchPulse`; await nextTick(); document.querySelector<HTMLElement>('#main')?.focus() })
 </script>
 <template>
+  <SpatialFeedback />
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="header-top page-width">

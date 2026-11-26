@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import {shallowRef} from 'vue'
+import {ref,shallowRef} from 'vue'
 import type {Fixture} from '../centre/football'
+const playing=ref(false)
 const featured=shallowRef<Fixture>()
 import {useReveal} from '../motion/motion'
 useReveal()
@@ -16,7 +17,7 @@ const intelligence = [
 <template>
   <main id="main" class="page home-page" tabindex="-1">
     <div class="edition-line"><span><span class="status-dot"></span> YOUR FOOTBALL INTELLIGENCE HUB</span><span>DEMO EDITION / 01</span></div>
-    <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow">MATCHDAY / STADIUM ENTRANCE</p><h1 id="hero-title">The game.<br><em>Decoded.</em></h1><p>Step out of the tunnel.<br>See the match from a different angle.</p><RouterLink class="ui-button ui-button--primary" to="/matches">Explore match centre <span aria-hidden="true">↗</span></RouterLink><span class="hero-footnote">FOOTBALL, ALIVE.</span></div><PitchHero /><RouterLink v-if="featured" class="hero-live" :to="{path:'/matches',query:{fixture:featured.id}}"><small>SIMULATED DEMO / MATCH FEED</small><strong>{{ featured.home_team_name }} <b>{{ featured.home_score }} : {{ featured.away_score }}</b> {{ featured.away_team_name }}</strong><span>{{ Math.floor(featured.clock_seconds/60) }}′ at update · Match Center ↗</span></RouterLink><div class="hero-caption"><span>WEST TUNNEL / PITCHSIDE</span><span>SCHEMATIC · NOT TRACKING DATA</span></div></section>
+    <section class="hero" :class="{'is-penalty':playing}" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow">FOOTBALL / ANOTHER DIMENSION</p><h1 id="hero-title">The game.<br><em>Decoded.</em></h1><p>Feel the game in every dimension.<br>Move the light. Kick things off.</p><RouterLink class="ui-button ui-button--primary" to="/matches">Explore match centre <span aria-hidden="true">↗</span></RouterLink><span class="hero-footnote">FOOTBALL, ALIVE.</span></div><PitchHero @penalty="playing=$event" /><RouterLink v-if="featured" class="hero-live" :to="{path:'/matches',query:{fixture:featured.id}}"><small>SIMULATED DEMO / MATCH FEED</small><strong>{{ featured.home_team_name }} <b>{{ featured.home_score }} : {{ featured.away_score }}</b> {{ featured.away_team_name }}</strong><span>{{ Math.floor(featured.clock_seconds/60) }}′ at update · Match Center ↗</span></RouterLink><div class="hero-caption"><span>THE BEAUTIFUL GAME / IN ORBIT</span><span>SCHEMATIC · NOT TRACKING DATA</span></div></section>
     <div class="data-notice"><span class="demo-label">DEMO</span><p>Try a tactical play in the stadium or select a fixture below. Matchday lists its data source separately.</p><RouterLink to="/system">System status ↗</RouterLink></div>
     <MatchCenter @fixtures="featured=$event[0]" />
     <section aria-labelledby="intelligence-heading" class="intelligence-section"><div class="section-heading"><div><p class="eyebrow">02 / A DEEPER UNDERSTANDING</p><h2 id="intelligence-heading">Football, with perspective.</h2></div><span class="demo-label">DEMO EXPERIENCES</span></div><div class="intelligence-grid"><article v-for="item in intelligence" :key="item.path" class="intelligence-card"><span class="feature-number" aria-hidden="true">{{ item.number }}</span><p class="eyebrow">{{ item.label }}</p><h3>{{ item.title }}</h3><p>{{ item.text }}</p><RouterLink :to="item.path" class="text-link">{{ item.cta }} ↗</RouterLink><small>Interactive demo</small></article></div></section>
